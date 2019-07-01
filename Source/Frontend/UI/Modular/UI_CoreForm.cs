@@ -112,9 +112,9 @@ Disclaimer:
 This program comes with absolutely ZERO warranty.
 You may use it at your own risk.
 
-BizHawk+RTC is distributed under an MIT Licence.
-Detailed information about other licences available at the
-following path: BizHawk -> RTC -> LICENCES
+RTC is distributed under an MIT License.
+Detailed information about other licenses available in the
+respective Vanguard implementation folders and the RTC folder.
 
 Known facts(and warnings):
 - Can generate incredible amounts of flashing and noise
@@ -131,6 +131,8 @@ This message only appears once.";
 
                 MessageBox.Show(disclaimer.Replace("[ver]", CorruptCore.RtcCore.RtcVersion), "RTC", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 NetCore.Params.SetParam("DISCLAIMER_READ");
+
+                NetCore.Params.SetParam("COMPRESS_STOCKPILE"); //Default param
             }
 
             CorruptCore.RtcCore.DownloadProblematicProcesses();

@@ -47,9 +47,6 @@ namespace RTCV.UI
             }
         }
 
-        public bool CompressStockpiles = true;
-        public bool IncludeReferencedFiles = true;
-
         public RTC_StockpileManager_Form()
 		{
 			InitializeComponent();
@@ -335,11 +332,11 @@ namespace RTCV.UI
             }));
 
 
-            loadMenuItems.Items.Add("Load Bizhawk settings from Stockpile", null, new EventHandler((ob, ev) =>
+            loadMenuItems.Items.Add($"Load {RtcCore.VanguardImplementationName} settings from Stockpile", null, new EventHandler((ob, ev) =>
             {
                 try
                 {
-                    if (UnsavedEdits && MessageBox.Show("You have unsaved edits in the Glitch Harvester Stockpile. \n\n This will restart Bizhawk. Are you sure you want to load without saving?",
+                    if (UnsavedEdits && MessageBox.Show($"You have unsaved edits in the Glitch Harvester Stockpile. \n\n This will restart {RtcCore.VanguardImplementationName}. Are you sure you want to load without saving?",
                         "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         return;
@@ -353,16 +350,16 @@ namespace RTCV.UI
                 }
             }));
 
-            loadMenuItems.Items.Add("Restore Bizhawk config Backup", null, new EventHandler((ob, ev) =>
+            loadMenuItems.Items.Add($"Restore {RtcCore.VanguardImplementationName} config Backup", null, new EventHandler((ob, ev) =>
             {
                 try
                 {
                     if (UnsavedEdits && MessageBox.Show(
-                        "You have unsaved edits in the Glitch Harvester Stockpile. \n\n This will restart Bizhawk. Are you sure you want to load without saving?",
+                        $"You have unsaved edits in the Glitch Harvester Stockpile. \n\n This will restart {RtcCore.VanguardImplementationName}. Are you sure you want to load without saving?",
                         "Unsaved edits in Stockpile", MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
                     AutoKillSwitch.Enabled = false;
-                    Stockpile.RestoreBizhawkConfig();
+                    Stockpile.RestoreEmuConfig();
                     AutoKillSwitch.Enabled = true;
                 }
                 finally
@@ -383,7 +380,7 @@ namespace RTCV.UI
 
 
             Stockpile sks = new Stockpile(dgvStockpile);
-            if (Stockpile.Save(sks, IncludeReferencedFiles, false, CompressStockpiles))
+            if (Stockpile.Save(sks, RTCV.NetCore.Params.IsParamSet("INCLUDE_REFERENCED_FILES"), false, RTCV.NetCore.Params.IsParamSet("COMPRESS_STOCKPILE")))
             {
                 sendCurrentStockpileToSKS();
                 btnSaveStockpile.Enabled = true;
@@ -397,7 +394,7 @@ namespace RTCV.UI
         {
 
             Stockpile sks = new Stockpile(dgvStockpile);
-            if (Stockpile.Save(sks, IncludeReferencedFiles, true, CompressStockpiles))
+            if (Stockpile.Save(sks, RTCV.NetCore.Params.IsParamSet("INCLUDE_REFERENCED_FILES"), true, RTCV.NetCore.Params.IsParamSet("COMPRESS_STOCKPILE")))
                 sendCurrentStockpileToSKS();
 
             UnsavedEdits = false;
@@ -572,12 +569,22 @@ namespace RTCV.UI
             });
             
             ((ToolStripMenuItem)ghSettingsMenu.Items.Add("Compress Stockpiles", null, new EventHandler((ob, ev) => {
-                CompressStockpiles = CompressStockpiles ^= true;
-            }))).Checked = CompressStockpiles;
 
-            ((ToolStripMenuItem)ghSettingsMenu.Items.Add("Include referenced files", null, new EventHandler((ob, ev) => {
-                IncludeReferencedFiles = IncludeReferencedFiles ^= true;
-            }))).Checked = IncludeReferencedFiles;
+                if (RTCV.NetCore.Params.IsParamSet("COMPRESS_STOCKPILE"))
+                    RTCV.NetCore.Params.RemoveParam("COMPRESS_STOCKPILE");
+                else
+                    RTCV.NetCore.Params.SetParam("COMPRESS_STOCKPILE");
+
+            }))).Checked = RTCV.NetCore.Params.IsParamSet("COMPRESS_STOCKPILE");
+
+            ((ToolStripMenuItem)ghSettingsMenu.Items.Add("Include referenced files", null, new EventHandler((ob, ev) =>
+            {
+                if (RTCV.NetCore.Params.IsParamSet("INCLUDE_REFERENCED_FILES"))
+                    RTCV.NetCore.Params.RemoveParam("INCLUDE_REFERENCED_FILES");
+                else
+                    RTCV.NetCore.Params.SetParam("INCLUDE_REFERENCED_FILES");
+
+            }))).Checked = RTCV.NetCore.Params.IsParamSet("INCLUDE_REFERENCED_FILES");
 
 
 

@@ -33,6 +33,9 @@ namespace RTCV.Launcher
         {
             try { 
                 var versionFile = MainForm.GetFileViaHttp($"{MainForm.webRessourceDomain}/rtc/releases/version.php");
+                if (versionFile == null)
+                    return null;
+
                 string str = Encoding.UTF8.GetString(versionFile);
                 List<string> onlineVersions = new List<string>(str.Split('|').Where(it => !it.Contains("Launcher")).ToArray());
 
@@ -44,17 +47,28 @@ namespace RTCV.Launcher
             }
         }
 
+
         public void refreshVersions()
         {
-            var versionFile = MainForm.GetFileViaHttp($"{MainForm.webRessourceDomain}/rtc/releases/version.php");
-            string str = Encoding.UTF8.GetString(versionFile);
+            Action a = () =>
+            {
+                var versionFile = MainForm.GetFileViaHttp($"{MainForm.webRessourceDomain}/rtc/releases/version.php");
 
-            //Ignores any build containing the word Launcher in it
-            List<string> onlineVersions = new List<string>(str.Split('|').Where(it => !it.Contains("Launcher")).ToArray());
+                if (versionFile == null)
+                    return;
 
-            lbOnlineVersions.Items.Clear();
-            lbOnlineVersions.Items.AddRange(onlineVersions.OrderByDescending(x => x).Select(it => it.Replace(".zip", "")).ToArray());
+                string str = Encoding.UTF8.GetString(versionFile);
 
+                //Ignores any build containing the word Launcher in it
+                List<string> onlineVersions = new List<string>(str.Split('|').Where(it => !it.Contains("Launcher")).ToArray());
+
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    lbOnlineVersions.Items.Clear();
+                    lbOnlineVersions.Items.AddRange(onlineVersions.OrderByDescending(x => x).Select(it => it.Replace(".zip", "")).ToArray());
+                }));
+            };
+            Task.Run(a);
         }
 
         private void lbOnlineVersions_SelectedIndexChanged(object sender, EventArgs e)

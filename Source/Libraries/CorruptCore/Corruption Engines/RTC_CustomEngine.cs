@@ -160,8 +160,8 @@ namespace RTCV.CorruptCore
 
 				byte[] value = new byte[precision];
 				long safeAddress = address - (address % precision) + alignment;
-				if (safeAddress > mi.Size - precision)
-					safeAddress = mi.Size - (2*precision) + alignment; //If we're out of range, hit the last aligned address
+				if (safeAddress > mi.Size - precision && mi.Size > precision)
+                    safeAddress = mi.Size - (2*precision) + alignment; //If we're out of range, hit the last aligned address
 
                 BlastUnit bu = new BlastUnit();
 
@@ -184,16 +184,16 @@ namespace RTCV.CorruptCore
                                 switch (precision)
                                 {
                                     case 1:
-                                        randomValue = RtcCore.RND.RandomULong(MinValue8Bit, MaxValue8Bit);
+                                        randomValue = RtcCore.RND.NextULong(MinValue8Bit, MaxValue8Bit, true);
                                         break;
                                     case 2:
-                                        randomValue = RtcCore.RND.RandomULong(MinValue16Bit, MaxValue16Bit);
+                                        randomValue = RtcCore.RND.NextULong(MinValue16Bit, MaxValue16Bit, true);
                                         break;
                                     case 4:
-                                        randomValue = RtcCore.RND.RandomULong(MinValue32Bit, MaxValue32Bit);
+                                        randomValue = RtcCore.RND.NextULong(MinValue32Bit, MaxValue32Bit, true);
                                         break;
                                     case 8:
-                                        randomValue = RtcCore.RND.RandomULong(MinValue64Bit, MaxValue64Bit);
+                                        randomValue = RtcCore.RND.NextULong(MinValue64Bit, MaxValue64Bit, true);
                                         break;
                                     default:
                                         def = true;
@@ -710,18 +710,23 @@ namespace RTCV.CorruptCore
 
 						var type = name2TypeDico[k];
 						if (t.GetType() != type)
-						{
-							//There's no typeconverter for bigint so we have to handle it manually. Convert it to a string then bigint it
-							if (type == typeof(BigInteger))
-							{
-								if (BigInteger.TryParse(t.ToString(), out BigInteger a))
-									t = a;
-								else
-									throw new Exception("Couldn't convert " + t.ToString() +
-										" to BigInteger! Something is wrong with your template.");
-							}
-							//handle the enums
-							else if (type.BaseType == typeof(Enum))
+                        {
+                            //There's no typeconverter for bigint so we have to handle it manually. Convert it to a string then bigint it
+                            if (type == typeof(BigInteger))
+                            {
+                                if (BigInteger.TryParse(t.ToString(), out BigInteger a))
+                                    t = a;
+                                else
+                                    throw new Exception("Couldn't convert " + t.ToString() +
+                                                        " to BigInteger! Something is wrong with your template.");
+                            }
+                            //ULong64 gets deserialized to bigint for some reason?????
+                            else if(t is BigInteger _t && _t <= ulong.MaxValue)
+                            {
+                                t = (ulong)(_t & ulong.MaxValue);
+                            }
+                            //handle the enums
+                            else if (type.BaseType == typeof(Enum))
 							{
 								//We can't use tryparse here so we have to catch the exception
 								try

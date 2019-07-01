@@ -19,7 +19,7 @@ namespace RTCV.CorruptCore
 	public static class RtcCore
 	{
 		//General RTC Values
-		public static string RtcVersion = "0.1.8";
+		public static string RtcVersion = "0.2.3";
 
         private static volatile int seed = DateTime.Now.Millisecond;
         public static int Seed => ++seed;
@@ -214,11 +214,16 @@ namespace RTCV.CorruptCore
 			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString(), value);
 		}
 
-		public static bool BizhawkOsdDisabled
+		public static bool EmulatorOsdDisabled
 		{
-			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()];
-			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString(), value);
+			get => (bool)RTCV.NetCore.AllSpec.CorruptCoreSpec[RTCSPEC.CORE_EMULATOROSDDISABLED.ToString()];
+			set => RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_EMULATOROSDDISABLED.ToString(), value);
 		}
+
+        public static string VanguardImplementationName
+        {
+            get => (String)NetCore.AllSpec.VanguardSpec?[VSPEC.NAME] ?? "Vanguard Implementation";
+        }
 
 
         public static bool IsStandaloneUI;
@@ -363,7 +368,7 @@ namespace RTCV.CorruptCore
 				partial[RTCSPEC.CORE_EXTRACTBLASTLAYER.ToString()] = false;
 				partial[RTCSPEC.CORE_AUTOCORRUPT.ToString()] = false;
 
-				partial[RTCSPEC.CORE_BIZHAWKOSDDISABLED.ToString()] = true;
+				partial[RTCSPEC.CORE_EMULATOROSDDISABLED.ToString()] = true;
 				partial[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT.ToString()] = false;
 				partial[RTCSPEC.CORE_SHOWCONSOLE.ToString()] = false;
 
@@ -646,7 +651,7 @@ namespace RTCV.CorruptCore
 								Domain = selectedDomains[r];
 
 								MaxAddress = cachedDomainSizes[r];
-								RandomAddress = RtcCore.RND. RandomLong(MaxAddress - cachedPrecision);
+								RandomAddress = RtcCore.RND.NextLong(0, MaxAddress - cachedPrecision);
 
 								bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision, cachedAlignment, cachedEngine);
 								if (bu != null)
@@ -665,7 +670,7 @@ namespace RTCV.CorruptCore
 
 							for (int i = 0; i < intensity; i++)
 							{
-								RandomAddress = RtcCore.RND.RandomLong(MaxAddress - cachedPrecision);
+								RandomAddress = RtcCore.RND.NextLong(0,MaxAddress - cachedPrecision);
 
 								bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision, cachedAlignment, cachedEngine);
 								if (bu != null)
@@ -685,7 +690,7 @@ namespace RTCV.CorruptCore
 
 								for (int i = 0; i < (int)((double)intensity / 10); i++)
 								{
-									RandomAddress = RtcCore.RND.RandomLong(MaxAddress - cachedPrecision);
+									RandomAddress = RtcCore.RND.NextLong(0, MaxAddress - cachedPrecision);
 
 									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision, cachedAlignment, cachedEngine);
 									if (bu != null)
@@ -723,7 +728,7 @@ namespace RTCV.CorruptCore
 								for (int j = 0; j < (intensity / normalized); j++)
 								{
 									MaxAddress = domainSize[i];
-									RandomAddress = RtcCore.RND.RandomLong(MaxAddress - cachedPrecision);
+									RandomAddress = RtcCore.RND.NextLong(0, MaxAddress - cachedPrecision);
 
 									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision, cachedAlignment, cachedEngine);
 									if (bu != null)
@@ -752,7 +757,7 @@ namespace RTCV.CorruptCore
 								for (int j = 0; j < normalizedIntensity[i]; j++)
 								{
 									MaxAddress = cachedDomainSizes[i];
-									RandomAddress = RtcCore.RND.RandomLong(MaxAddress - cachedPrecision);
+									RandomAddress = RtcCore.RND.NextLong(0, MaxAddress - cachedPrecision);
 
 									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision, cachedAlignment, cachedEngine);
 									if (bu != null)
@@ -771,7 +776,7 @@ namespace RTCV.CorruptCore
 								for (int j = 0; j < (intensity / selectedDomains.Length); j++)
 								{
 									MaxAddress = cachedDomainSizes[i];
-									RandomAddress = RtcCore.RND.RandomLong(MaxAddress - cachedPrecision);
+									RandomAddress = RtcCore.RND.NextLong(0, MaxAddress - cachedPrecision);
 
 									bu = GetBlastUnit(Domain, RandomAddress, cachedPrecision, cachedAlignment, cachedEngine);
 									if (bu != null)
@@ -835,7 +840,7 @@ namespace RTCV.CorruptCore
 			Domain = _selectedDomains[RtcCore.RND.Next(_selectedDomains.Length)];
 
 			MaxAddress = MemoryDomains.GetInterface(Domain).Size;
-			RandomAddress = RtcCore.RND.RandomLong(MaxAddress - 1);
+			RandomAddress = RtcCore.RND.NextLong(0, MaxAddress - 1);
 
 			return new BlastTarget(Domain, RandomAddress);
 		}

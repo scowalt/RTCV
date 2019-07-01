@@ -498,7 +498,7 @@ namespace RTCV.CorruptCore
 				if (sks.RtcVersion == null)
 					errorMessages.Add("You have loaded a broken stockpile that didn't contain an RTC Version number\n. There is no reason to believe that these items will work.");
 				else
-					errorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RtcCore.RtcVersion + "\n" + "Items might not appear identical to how they when they were created or it is possible that they don't work if BizHawk was upgraded.");
+					errorMessages.Add("You have loaded a stockpile created with RTC " + sks.RtcVersion + " using RTC " + RtcCore.RtcVersion + "\n" + "Items might not appear identical to how they when they were created or it is possible that they won't work.");
 			}
 
 			if (errorMessages.Count == 0)
@@ -704,7 +704,7 @@ namespace RTCV.CorruptCore
 
 		}
 
-        public static void RestoreBizhawkConfig()
+        public static void RestoreEmuConfig()
 		{
 			if (((bool?)AllSpec.VanguardSpec[VSPEC.SUPPORTS_CONFIG_MANAGEMENT] ?? false) == false)
 			{
@@ -1037,10 +1037,26 @@ namespace RTCV.CorruptCore
 				bu.Reroll();
 		}
 
-		public void RasterizeVMDs()
-		{
-			foreach (BlastUnit bu in Layer)
-				bu.RasterizeVMDs();
+		public void RasterizeVMDs(string vmdToRasterize = null)
+        {
+            List<BlastUnit> unitsToReplace = new List<BlastUnit>();
+            List<List<BlastUnit>> unitsToReplaceWith = new List<List<BlastUnit>>();
+            foreach (BlastUnit bu in Layer)
+            {
+                var u = bu.GetRasterizedUnits(vmdToRasterize);
+                if (u.Count > 1)
+                {
+                    unitsToReplace.Add(bu);
+                    unitsToReplaceWith.Add(u);
+                }
+            }
+
+            for (int i = 0; i < unitsToReplace.Count; i++)
+            {
+                int indexToReplace = this.Layer.IndexOf(unitsToReplace[i]);
+                this.Layer.InsertRange(indexToReplace, unitsToReplaceWith[i]);
+                this.Layer.RemoveAt(indexToReplace + unitsToReplaceWith[i].Count);
+            }
 		}
 
 		private string shared = "[DIFFERENT]";
@@ -1429,20 +1445,69 @@ namespace RTCV.CorruptCore
 		}
 
         /// <summary>
-        /// Rasterizes VMDs to their underlying domain
+        /// Returns a blastunit that's a subunit of the current unit
         /// </summary>
-        public void RasterizeVMDs()
+        /// <param name="start">Where to start in the unit</param>
+        /// <param name="end">Where to end (INCLUSIVE)</param>
+        /// <returns></returns>
+        public BlastUnit GetSubUnit(int start, int end)
         {
+            BlastUnit bu = (BlastUnit)this.Clone();
+            bu.Precision = end - start;
+            bu.Address += start;
+            if (bu.Source == BlastUnitSource.STORE)
+            {
+                bu.SourceAddress += start;
+            }
+            else
+            {
+                for (int i = 0; i < bu.Precision; i++)
+                {
+                    bu.Value[i] = this.Value[start + i];
+                }
+            }
+            return bu;
+        }
+
+        /// <summary>
+        /// Rasterizes VMDs to their underlying domain
+        /// This returns a blastunit[] because if we have a non-contiguous vmd, we need to return multiple units
+        /// </summary>
+        public List<BlastUnit> GetRasterizedUnits(string vmdToRasterize = null)
+        {
+            if(vmdToRasterize == null)
+                vmdToRasterize = "[V]";
+            bool breakDown = false;
+			BlastLayer l = new BlastLayer();
             //Todo - Change this to a more unique marker than [V]?
-            if (Domain.Contains("[V]"))
+            if (Domain.Contains(vmdToRasterize))
             {
                 string domain = (string)Domain.Clone();
                 long address = Address;
 
                 if (MemoryDomains.VmdPool[domain] is VirtualMemoryDomain vmd)
                 {
-                    Domain = vmd.GetRealDomain(address);
-                    Address = vmd.GetRealAddress(address);
+                    long lastAddress = vmd.GetRealAddress(address);
+                    string lastDomain = vmd.GetRealDomain(address);
+                    for (int i = 1; i < this.Precision; i++)
+                    {
+                        var a = vmd.GetRealAddress(address + i);
+                        var d = vmd.GetRealDomain(address + i);
+                        if (a != lastAddress + 1 || d != lastDomain)
+                        {
+                            breakDown = true;
+                            break;
+                        }
+
+						lastAddress = a;
+						lastDomain = d;
+                    }
+                    if (!breakDown)
+                    {
+                        Domain = vmd.GetRealDomain(address);
+                        Address = vmd.GetRealAddress(address);
+                    }
+
                 }
                 else
                 {
@@ -1450,15 +1515,34 @@ namespace RTCV.CorruptCore
                     Address = -1;
                 }
             }
-            if (SourceDomain?.Contains("[V]") ?? false)
+            if (SourceDomain?.Contains(vmdToRasterize) ?? false)
             {
                 string sourceDomain = (string)SourceDomain.Clone();
                 long sourceAddress = SourceAddress;
 
                 if (MemoryDomains.VmdPool[sourceDomain] is VirtualMemoryDomain vmd)
                 {
-                    SourceDomain = vmd.GetRealDomain(sourceAddress);
-                    SourceAddress = vmd.GetRealAddress(sourceAddress);
+                    long lastAddress = vmd.GetRealAddress(sourceAddress);
+                    string lastDomain = vmd.GetRealDomain(sourceAddress);
+                    for (int i = 1; i < this.Precision; i++)
+                    {
+                        var a = vmd.GetRealAddress(sourceAddress + i);
+                        var d = vmd.GetRealDomain(sourceAddress + i);
+                        if (a != lastAddress + 1 || d != lastDomain)
+                        {
+                            breakDown = true;
+                            break;
+                        }
+                        lastAddress = a;
+                        lastDomain = d;
+                    }
+
+                    if (!breakDown)
+                    {
+                        SourceDomain = vmd.GetRealDomain(sourceAddress);
+                        SourceAddress = vmd.GetRealAddress(sourceAddress);
+                    }
+
                 }
                 else
                 {
@@ -1467,7 +1551,21 @@ namespace RTCV.CorruptCore
                 }
             }
 
-        }
+            if (breakDown)
+            {
+                for (int i = 0; i < this.Precision; i++)
+				{
+					var bu = this.GetSubUnit(i, i + 1);
+					l.Layer.Add(bu);
+                }
+                l.RasterizeVMDs(); //recursively do this
+            }
+            else
+                l.Layer.Add(this);
+
+			return l.Layer;
+
+		}
 		/// <summary>
 		/// Adds a blastunit to the execution pool
 		/// </summary>
@@ -1664,14 +1762,14 @@ namespace RTCV.CorruptCore
 			return false;
 		}
 
-		public bool LimiterCheck(MemoryInterface mi)
+		public bool LimiterCheck(MemoryInterface destMI)
 		{
 			if (Source == BlastUnitSource.STORE)
 			{
 				if (StoreLimiterSource == StoreLimiterSource.ADDRESS || StoreLimiterSource == StoreLimiterSource.BOTH)
 				{
 					if (Filtering.LimiterPeekBytes(Address,
-						Address + Precision, Domain, LimiterListHash, mi))
+						Address + Precision, Domain, LimiterListHash, destMI))
 					{
 						if (InvertLimiter)
 							return ReturnFalseAndDequeueIfContinuousStore();
@@ -1680,8 +1778,13 @@ namespace RTCV.CorruptCore
 				}
 				if (StoreLimiterSource == StoreLimiterSource.SOURCEADDRESS || StoreLimiterSource == StoreLimiterSource.BOTH)
 				{
+					//We need an MI for the source domain. We pass a normal one around and pull this when needed
+					MemoryInterface sourceMI = MemoryDomains.GetInterface(SourceDomain);
+                    if (sourceMI == null)
+                        return false;
+
 					if (Filtering.LimiterPeekBytes(SourceAddress,
-						SourceAddress + Precision, Domain, LimiterListHash, mi))
+						SourceAddress + Precision, Domain, LimiterListHash, sourceMI))
 					{
 						if (InvertLimiter)
 							return ReturnFalseAndDequeueIfContinuousStore();
@@ -1692,7 +1795,7 @@ namespace RTCV.CorruptCore
 			else
 			{
 				if (Filtering.LimiterPeekBytes(Address,
-					Address + Precision, Domain, LimiterListHash, mi))
+					Address + Precision, Domain, LimiterListHash, destMI))
 				{
 					if (InvertLimiter)
 						return ReturnFalseAndDequeueIfContinuousStore();
@@ -1745,16 +1848,16 @@ namespace RTCV.CorruptCore
 							switch (Precision)
 							{
 								case (1):
-									randomValue = RtcCore.RND.RandomULong(RTC_CustomEngine.MinValue8Bit, RTC_CustomEngine.MaxValue8Bit);
+									randomValue = RtcCore.RND.NextULong(RTC_CustomEngine.MinValue8Bit, RTC_CustomEngine.MaxValue8Bit, true);
 									break;
 								case (2):
-									randomValue = RtcCore.RND.RandomULong(RTC_CustomEngine.MinValue16Bit, RTC_CustomEngine.MaxValue16Bit);
+									randomValue = RtcCore.RND.NextULong(RTC_CustomEngine.MinValue16Bit, RTC_CustomEngine.MaxValue16Bit, true);
 									break;
                                 case (4):
-                                    randomValue = RtcCore.RND.RandomULong(RTC_CustomEngine.MinValue32Bit, RTC_CustomEngine.MaxValue32Bit);
+                                    randomValue = RtcCore.RND.NextULong(RTC_CustomEngine.MinValue32Bit, RTC_CustomEngine.MaxValue32Bit, true);
                                     break;
                                 case (8):
-                                    randomValue = RtcCore.RND.RandomULong(RTC_CustomEngine.MinValue64Bit, RTC_CustomEngine.MaxValue64Bit);
+                                    randomValue = RtcCore.RND.NextULong(RTC_CustomEngine.MinValue64Bit, RTC_CustomEngine.MaxValue64Bit, true);
                                     break;
                                 //No limits if out of normal range
                                 default:
@@ -1769,16 +1872,16 @@ namespace RTCV.CorruptCore
 							switch (this.Precision)
 							{
 								case (1):
-									randomValue = RtcCore.RND.RandomULong(0, 0xFF);
+									randomValue = RtcCore.RND.NextULong(0, 0xFF, true);
 									break;
 								case (2):
-									randomValue = RtcCore.RND.RandomULong(0, 0xFFFF);
+									randomValue = RtcCore.RND.NextULong(0, 0xFFFF, true);
                                     break;
                                 case (4):
-                                    randomValue = RtcCore.RND.RandomLong(0, 0xFFFFFFFF);
+                                    randomValue = RtcCore.RND.NextULong(0, 0xFFFFFFFF, true);
                                     break;
                                 case (8):
-                                    randomValue = RtcCore.RND.RandomULong(0, 0xFFFFFFFFFFFFFFFF);
+                                    randomValue = RtcCore.RND.NextULong(0, 0xFFFFFFFFFFFFFFFF, true);
                                     break;
                                 //No limits if out of normal range
                                 default:
@@ -1802,16 +1905,16 @@ namespace RTCV.CorruptCore
 					switch (Precision)
 					{
 						case (1):
-							randomValue = RtcCore.RND.RandomULong(0, 0xFF);
+							randomValue = RtcCore.RND.NextULong(0, 0xFF, true);
 							break;
 						case (2):
-							randomValue = RtcCore.RND.RandomULong(0, 0xFFFF);
+							randomValue = RtcCore.RND.NextULong(0, 0xFFFF, true);
 							break;
                         case (4):
-                            randomValue = RtcCore.RND.RandomULong(0, 0xFFFFFFFF);
+                            randomValue = RtcCore.RND.NextULong(0, 0xFFFFFFFF, true);
                             break;
                         case (8):
-                            randomValue = RtcCore.RND.RandomULong(0, 0xFFFFFFFFFFFFFFFF);
+                            randomValue = RtcCore.RND.NextULong(0, 0xFFFFFFFFFFFFFFFF, true);
                             break;
                         //No limits if out of normal range
                         default:
@@ -1839,7 +1942,7 @@ namespace RTCV.CorruptCore
 				if (RtcCore.RerollSourceAddress)
 				{
 					long maxAddress = MemoryDomains.GetInterface(SourceDomain)?.Size ?? 1;
-					SourceAddress = RtcCore.RND.RandomLong(maxAddress - 1);
+					SourceAddress = RtcCore.RND.NextLong(0, maxAddress - 1);
 				}
 				
 				if (RtcCore.RerollDomain)
@@ -1849,7 +1952,7 @@ namespace RTCV.CorruptCore
 				if (RtcCore.RerollAddress)
 				{
 					long maxAddress = MemoryDomains.GetInterface(Domain)?.Size ?? 1;
-					Address = RtcCore.RND.RandomLong(maxAddress - 1);
+					Address = RtcCore.RND.NextLong(0, maxAddress - 1);
 				}
 			}
 		}

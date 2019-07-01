@@ -7,9 +7,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace RTCV.Launcher
 {
@@ -33,7 +35,7 @@ namespace RTCV.Launcher
         public static DownloadForm dForm = null;
         public static Form lpForm = null;
 
-        public static int launcherVer = 7;
+        public static int launcherVer = 8;
 
 
         public static int devCounter = 0;
@@ -94,22 +96,30 @@ namespace RTCV.Launcher
 
             try
             {
-
-                var motdFile = GetFileViaHttp($"{MainForm.webRessourceDomain}/rtc/releases/MOTD.txt");
-                string motd = Encoding.UTF8.GetString(motdFile);
-
-                lbMOTD.Text = motd;
-
+                Action a = () =>
+                {
+                    var motdFile = GetFileViaHttp($"{MainForm.webRessourceDomain}/rt/releases/MOTD.txt");
+                    string motd = "";
+                    if (motdFile == null)
+                        motd = "Couldn't load the RTC MOTD from Redscientist.com";
+                    else
+                        motd = Encoding.UTF8.GetString(motdFile);
+                    
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        lbMOTD.Text = motd;
+                    }));
+                };
+                Task.Run(a);
             }
             catch
             {
                 lbMOTD.Text = "Couldn't load the RTC MOTD from Redscientist.com";
+                MessageBox.Show("Couldn't connect to the server.");
             }
 
             lbMOTD.Visible = true;
-
             SetRTCColor(Color.FromArgb(120, 180, 155));
-
         }
 
         public void SetRTCColor(Color color, Form form = null)
@@ -159,17 +169,36 @@ namespace RTCV.Launcher
             lbVersions.Items.AddRange(versions.OrderByDescending(x => x).Select(it => getFilenameFromFullFilename(it)).ToArray<object>());
             SelectedVersion = null;
 
-            string latestVersion = VersionDownloadPanel.getLatestVersion();
-            pbNewVersionNotification.Visible = !versions.Select(it => it.Substring(it.LastIndexOf('\\') + 1)).Contains(latestVersion);
 
-
+            Action a = () =>
+            {
+                string latestVersion = VersionDownloadPanel.getLatestVersion();
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    pbNewVersionNotification.Visible = !versions.Select(it => it.Substring(it.LastIndexOf('\\') + 1)).Contains(latestVersion);
+                }));
+            };
+            Task.Run(a);
         }
 
         public static byte[] GetFileViaHttp(string url)
         {
-            using (WebClient client = new WebClient())
+			//Windows does the big dumb: part 11
+			WebRequest.DefaultWebProxy = null;
+
+            using (HttpClient client = new HttpClient())
             {
-                return client.DownloadData(url);
+                client.Timeout = TimeSpan.FromMilliseconds(12000);
+                byte[] b = null;
+                try
+                {
+                    b = client.GetByteArrayAsync(url).Result;
+                }
+                catch (AggregateException e)
+                {
+                    Console.WriteLine($"{url} timed out.");
+                }
+                return b;
             }
         }
 

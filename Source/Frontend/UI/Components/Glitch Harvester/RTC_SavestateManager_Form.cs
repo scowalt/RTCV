@@ -37,9 +37,10 @@ namespace RTCV.UI
             savestateList.DataSource = savestateBindingSource;
         }
 
-        private void btnLoadSavestateList_Click(object sender, EventArgs e)
+        private void btnLoadSavestateList_MouseClick(object sender, MouseEventArgs e)
         {
-            loadSavestateList();
+            if(e.Button == MouseButtons.Left)
+                loadSavestateList();
         }
 
 
@@ -51,7 +52,7 @@ namespace RTCV.UI
 
         }
 
-        private void loadSavestateList(string fileName = null)
+        private void loadSavestateList(bool import = false, string fileName = null)
         {
             if (fileName == null)
             {
@@ -78,21 +79,28 @@ namespace RTCV.UI
 
             SaveStateKeys ssk;
 
-            //Commit any used states to the SESSION folder
-            commitUsedStatesToSession();
-            savestateBindingSource.Clear();
+            if (!import)
+            {
+                //Commit any used states to the SESSION folder
+                commitUsedStatesToSession();
+                savestateBindingSource.Clear();
+            }
 
+            var extractFolder = import ? "TEMP" : "SSK";
+
+            //Extract the ssk
+            if (!Stockpile.Extract(fileName, Path.Combine("WORKING", extractFolder), "keys.json"))
+                return;
+
+            //Read in the ssk
             try
             {
-
-                Stockpile.EmptyFolder(Path.Combine("WORKING", "TEMP"));
-                if (!Stockpile.Extract(fileName, Path.Combine("WORKING", "SSK"), "keys.json"))
-                    return;
-
-                using (FileStream fs = File.Open(Path.Combine(CorruptCore.RtcCore.workingDir, "SSK", "keys.json"), FileMode.OpenOrCreate))
+                using (FileStream fs = File.Open(Path.Combine(RtcCore.workingDir, extractFolder, "keys.json"), FileMode.OpenOrCreate))
                 {
-                    ssk = JsonHelper.Deserialize<SaveStateKeys>(fs);
+                    ssk = CorruptCore.JsonHelper.Deserialize<SaveStateKeys>(fs);
+                    fs.Close();
                 }
+
             }
             catch (Exception ex)
             {
@@ -106,19 +114,55 @@ namespace RTCV.UI
                 return;
             }
 
+
             if (ssk == null)
             {
                 MessageBox.Show("The Savestate Keys file was empty (null).\n");
                 return;
             }
 
-			var s = (string) RTCV.NetCore.AllSpec.VanguardSpec?[VSPEC.NAME] ?? "ERROR";
-			if (!String.IsNullOrEmpty(ssk.VanguardImplementation) && !ssk.VanguardImplementation.Equals(s, StringComparison.OrdinalIgnoreCase) && ssk.VanguardImplementation != "ERROR")
-			{
-				MessageBox.Show($"The ssk you loaded is for a different Vanguard implementation.\nThe ssk reported {ssk.VanguardImplementation} but you're connected to {s}.\nThis is a fatal error. Aborting load.");
-				return;
-			}
-			
+            var s = (string) RTCV.NetCore.AllSpec.VanguardSpec?[VSPEC.NAME] ?? "ERROR";
+            if (!String.IsNullOrEmpty(ssk.VanguardImplementation) && !ssk.VanguardImplementation.Equals(s, StringComparison.OrdinalIgnoreCase) && ssk.VanguardImplementation != "ERROR")
+            {
+                MessageBox.Show($"The ssk you loaded is for a different Vanguard implementation.\nThe ssk reported {ssk.VanguardImplementation} but you're connected to {s}.\nThis is a fatal error. Aborting load.");
+                return;
+            }
+
+            if (import)
+            {
+                var allCopied = new List<string>();
+                //Copy from temp to sks
+                foreach (string file in Directory.GetFiles(Path.Combine(RtcCore.workingDir, "TEMP")))
+                {
+                    if (!file.Contains(".ssk"))
+                    {
+                        try
+                        {
+                            string dest = Path.Combine(RtcCore.workingDir, "SSK", Path.GetFileName(file));
+
+                            //Only copy if a version doesn't exist
+                            //This prevents copying over keys
+                            if (!File.Exists(dest))
+                            {
+                                File.Copy(file, dest); // copy roms/stockpile/whatever to sks folder
+                                allCopied.Add(dest);
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Unable to copy a file from temp to ssk. The culprit is " + file + ".\nCancelling operation.\n " + ex.ToString());
+                            //Attempt to cleanup
+                            foreach (var f in allCopied)
+                                File.Delete(f);
+                            return;
+
+                        }
+                    }
+                }
+
+                Stockpile.EmptyFolder(Path.Combine("WORKING", "TEMP"));
+            }
 
             for (var i = 0; i < ssk.StashKeys.Count; i++)
             {
@@ -151,13 +195,27 @@ namespace RTCV.UI
             allStashKeys.AddRange(StockpileManager_UISide.StashHistory);
             allStashKeys.AddRange(S.GET<RTC_NewBlastEditor_Form>().GetStashKeys());
             allStashKeys.AddRange(S.GET<RTC_BlastGenerator_Form>().GetStashKeys());
+            bool notified = false;
             foreach (var sk in allStashKeys.Where(x => x?.StateLocation == StashKeySavestateLocation.SSK))
             {
                 try
                 {
                     var stateName = sk.GameName + "." + sk.ParentKey + ".timejump.State"; // get savestate name
-                    File.Copy(Path.Combine(CorruptCore.RtcCore.workingDir, "SSK", stateName)
-                        , Path.Combine(CorruptCore.RtcCore.workingDir, "SESSION", stateName), true);
+                    if(File.Exists(Path.Combine(CorruptCore.RtcCore.workingDir, "SSK", stateName))) //it SHOULD be here. If it's not, let's hunt for it
+                        File.Copy(Path.Combine(CorruptCore.RtcCore.workingDir, "SSK", stateName), Path.Combine(CorruptCore.RtcCore.workingDir, "SESSION", stateName), true);
+                    else if (File.Exists(Path.Combine(CorruptCore.RtcCore.workingDir, "TEMP", stateName)))
+                        File.Copy(Path.Combine(CorruptCore.RtcCore.workingDir, "TEMP", stateName), Path.Combine(CorruptCore.RtcCore.workingDir, "SESSION", stateName), true);
+                    else if (File.Exists(Path.Combine(CorruptCore.RtcCore.workingDir, "SKS", stateName)))
+                        File.Copy(Path.Combine(CorruptCore.RtcCore.workingDir, "SKS", stateName), Path.Combine(CorruptCore.RtcCore.workingDir, "SESSION", stateName), true);
+                    else if (File.Exists(Path.Combine(CorruptCore.RtcCore.workingDir, "SESSION", stateName)))
+                        continue;
+                    else if (!notified)
+                    {
+                        MessageBox.Show($"Couldn't locate savestate {stateName}.\nIf you remember the course of actions that lead here, report to the RTC devs.\nSome of your non-stockpiled stashkeys may be broken.");
+                        notified = true;
+                    }
+                        
+
                     sk.StateLocation = StashKeySavestateLocation.SESSION;
                 }
                 catch (IOException e)
@@ -181,6 +239,11 @@ namespace RTCV.UI
                     savestateBindingSource.Clear();
 
                 }));
+
+                columnsMenu.Items.Add("Import SSK", null, (ob, ev) =>
+                {
+                    loadSavestateList(true);
+                });
 
                 columnsMenu.Show(this, locate);
             }
@@ -258,8 +321,19 @@ namespace RTCV.UI
                 }
 
                 string tempFilename = Filename + ".temp";
-                string tempFolderPath = Path.Combine(CorruptCore.RtcCore.workingDir, "TEMP");
+                //If there's already a temp file from a previous failed save, delete it
+                try
+                {
+                    if (File.Exists(tempFilename))
+                        File.Delete(tempFilename);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
 
+                string tempFolderPath = Path.Combine(CorruptCore.RtcCore.workingDir, "TEMP");
                 System.IO.Compression.ZipFile.CreateFromDirectory(tempFolderPath, tempFilename, System.IO.Compression.CompressionLevel.Fastest, false);
 
                 if (File.Exists(Filename))
@@ -302,7 +376,7 @@ namespace RTCV.UI
             if (files?.Length > 0 && files[0]
                 .Contains(".ssk"))
             {
-                loadSavestateList(files[0]);
+                loadSavestateList(false, files[0]);
             }
 
             //Bring the UI back to normal after a drag+drop to prevent weird merge stuff 
