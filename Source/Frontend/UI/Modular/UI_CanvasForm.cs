@@ -141,6 +141,7 @@ namespace RTCV.UI
                         UI_ComponentFormTile tileForm = getTileForm(canvasGrid.gridComponent[x, y], size?.Width, size?.Height, DisplayHeader);
                         tileForm.TopLevel = false;
                         targetForm.Controls.Add(tileForm);
+                        targetForm.Anchor = tileForm.Anchor;
                         tileForm.Location = getTileLocation(x, y);
 
 
