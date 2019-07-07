@@ -31,11 +31,12 @@ namespace StandaloneRTC
 
 			int nbInstances = processes.Count(prc => prc == "STANDALONERTC");
 
-			if (nbInstances > 1)
-			{
-				MessageBox.Show("RTC cannot run more than once at the time in Detached mode.\nLoading aborted", "StandaloneRTC.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
+            if (nbInstances > 1)
+            {
+                MessageBox.Show("RTC cannot run more than once at the time in Detached mode.\nLoading aborted", "StandaloneRTC.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
 			StartLoader(args);
 		}
 

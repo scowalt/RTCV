@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
-using SlimDX.DirectInput;
+using OpenTK;
+using OpenTK.Input;
 using RTCV.NetCore;
 using RTCV.UI.Input;
 
@@ -71,18 +72,14 @@ namespace RTCV.UI.Input
 		}
 
 		public static void Initialize()
-		{
-			KeyInput.Initialize();
-			IPCKeyInput.Initialize();
-			GamePad.Initialize();
-			GamePad360.Initialize();
-			Instance = new Input();
+        {
+            OTK_Keyboard.Initialize();
+            OTK_GamePad.Initialize();
+            Instance = new Input();
 		}
 
 		public static void Cleanup()
 		{
-			KeyInput.Cleanup();
-			GamePad.Cleanup();
 		}
 
 		public enum InputEventType
@@ -269,12 +266,11 @@ namespace RTCV.UI.Input
 		{
 			for (; ; )
 			{
-				var keyEvents = KeyInput.Update().Concat(IPCKeyInput.Update());
-				GamePad.UpdateAll();
-				GamePad360.UpdateAll();
+				var keyEvents = OTK_Keyboard.Update();
+                OTK_GamePad.UpdateAll();
 
-				//this block is going to massively modify data structures that the binding method uses, so we have to lock it all
-				lock (this)
+                //this block is going to massively modify data structures that the binding method uses, so we have to lock it all
+                lock (this)
 				{
 					_NewEvents.Clear();
 
@@ -282,78 +278,32 @@ namespace RTCV.UI.Input
 					foreach (var ke in keyEvents)
 						HandleButton(ke.Key.ToString(), ke.Pressed);
 
-					lock (FloatValues)
-					{
-						//FloatValues.Clear();
+                    //this block is going to massively modify data structures that the binding method uses, so we have to lock it all
+                    lock (this)
+                    {
+                        _NewEvents.Clear();
 
-						//analyze xinput
-						foreach (var pad in GamePad360.EnumerateDevices())
-						{
-							string xname = "X" + pad.PlayerNumber + " ";
-							for (int b = 0; b < pad.NumButtons; b++)
-								HandleButton(xname + pad.ButtonName(b), pad.Pressed(b));
-							foreach (var sv in pad.GetFloats())
-							{
-								string n = xname + sv.Item1;
-								float f = sv.Item2;
-								if (trackdeltas)
-									FloatDeltas[n] += Math.Abs(f - FloatValues[n]);
-								FloatValues[n] = f;
-							}
-						}
+                        //analyze keys
+                        foreach (var ke in keyEvents)
+                            HandleButton(ke.Key.ToString(), ke.Pressed);
 
-						//analyze joysticks
-						foreach (var pad in GamePad.EnumerateDevices())
-						{
-							string jname = "J" + pad.PlayerNumber + " ";
-							for (int b = 0; b < pad.NumButtons; b++)
-								HandleButton(jname + pad.ButtonName(b), pad.Pressed(b));
-							foreach (var sv in pad.GetFloats())
-							{
-								string n = jname + sv.Item1;
-								float f = sv.Item2;
-								//if (n == "J5 RotationZ")
-								//	System.Diagnostics.Debugger.Break();
-								if (trackdeltas)
-									FloatDeltas[n] += Math.Abs(f - FloatValues[n]);
-								FloatValues[n] = f;
-							}
-						}
+                        lock (FloatValues)
+                        {
+                            //FloatValues.Clear();
 
-						// analyse moose
-						// other sorts of mouse api (raw input) could easily be added as a separate listing under a different class
-						if (WantingMouseFocus.Contains(System.Windows.Forms.Form.ActiveForm))
-						{
-							var P = System.Windows.Forms.Control.MousePosition;
-							if (trackdeltas)
-							{
-								// these are relative to screen coordinates, but that's not terribly important
-								FloatDeltas["WMouse X"] += Math.Abs(P.X - FloatValues["WMouse X"]) * 50;
-								FloatDeltas["WMouse Y"] += Math.Abs(P.Y - FloatValues["WMouse Y"]) * 50;
-							}
-							// coordinate translation happens later
-							FloatValues["WMouse X"] = P.X;
-							FloatValues["WMouse Y"] = P.Y;
+                            //analyze OTK
+                            foreach (var pad in OTK_GamePad.EnumerateDevices())
+                            {
+                                string cType = pad.MappedGamePad ? "X" : "J";
+                                string xname = cType + pad.ID + " ";
 
-							var B = System.Windows.Forms.Control.MouseButtons;
-							HandleButton("WMouse L", (B & System.Windows.Forms.MouseButtons.Left) != 0);
-							HandleButton("WMouse C", (B & System.Windows.Forms.MouseButtons.Middle) != 0);
-							HandleButton("WMouse R", (B & System.Windows.Forms.MouseButtons.Right) != 0);
-							HandleButton("WMouse 1", (B & System.Windows.Forms.MouseButtons.XButton1) != 0);
-							HandleButton("WMouse 2", (B & System.Windows.Forms.MouseButtons.XButton2) != 0);
-						}
-						else
-						{
-							//dont do this: for now, it will interfere with the virtualpad. dont do something similar for the mouse position either
-							//unpress all buttons
-							//HandleButton("WMouse L", false);
-							//HandleButton("WMouse C", false);
-							//HandleButton("WMouse R", false);
-							//HandleButton("WMouse 1", false);
-							//HandleButton("WMouse 2", false);
-						}
-
-					}
+                                foreach (var but in pad.buttonObjects)
+                                {
+                                    HandleButton(xname + but.ButtonName, but.ButtonAction());
+                                }
+                            }
+                        }
+                    }
 
                     bool allowInput = (bool?) RTCV.NetCore.AllSpec.UISpec[NetcoreCommands.RTC_INFOCUS] ?? true;
 

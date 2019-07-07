@@ -62,9 +62,8 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Deps\SlimDX.dll</HintPath>
+    <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -310,11 +309,10 @@
     </Compile>
     <Compile Include="GameProtection.cs" />
     <Compile Include="Input\Bindings.cs" />
-    <Compile Include="Input\Gamepad.cs" />
-    <Compile Include="Input\Gamepad360.cs" />
     <Compile Include="Input\Input.cs" />
-    <Compile Include="Input\IPCKeyInput.cs" />
     <Compile Include="Input\Keyboard.cs" />
+    <Compile Include="Input\OTK_Gamepad.cs" />
+    <Compile Include="Input\OTK_Keyboard.cs" />
     <Compile Include="Modular\UI_CanvasForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -491,6 +489,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -12,6 +12,7 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using OpenTK;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
 using RTCV.UI;
@@ -45,6 +46,10 @@ namespace RTCV.UI
 
         public static void Start(Form standaloneForm = null)
         {
+
+            var toolkitOptions = global::OpenTK.ToolkitOptions.Default;
+            toolkitOptions.Backend = PlatformBackend.PreferNative;
+            Toolkit.Init(toolkitOptions);
 
             S.formRegister.FormRegistered += FormRegister_FormRegistered;
             //registerFormEvents(S.GET<RTC_Core_Form>());
@@ -491,7 +496,7 @@ namespace RTCV.UI
                 }
 
                 // useful debugging:
-                //Console.WriteLine(ie);
+                Console.WriteLine(ie);
 
 
                 // look for hotkey bindings for this key
