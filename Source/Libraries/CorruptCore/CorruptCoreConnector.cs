@@ -142,7 +142,7 @@ namespace RTCV.CorruptCore
                         {
                             SyncObjectSingleton.FormExecute(() =>
                             {
-                                var sh = new ScriptHost();
+                                var sh = new Common.Tools.ScriptHost();
                                 sh.Show();
                             });
                         }

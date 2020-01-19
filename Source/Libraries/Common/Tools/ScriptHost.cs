@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace RTCV.CorruptCore.Tools
+namespace RTCV.Common.Tools
 {
     public partial class ScriptHost : Form
     {
@@ -54,7 +54,7 @@ namespace RTCV.CorruptCore.Tools
 
         private void TabControl1_PageAdded(object sender, Manina.Windows.Forms.PageEventArgs e)
         {
-            var sm = new ScriptManager();
+            var sm = new RTCV.Common.Controls.ScriptManager();
             sm.Dock = DockStyle.Fill;
             e.Page.Controls.Add(sm);
         }

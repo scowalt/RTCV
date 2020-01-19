@@ -1,4 +1,4 @@
-namespace RTCV.CorruptCore.Tools
+namespace RTCV.Common.Tools
 {
     partial class ScriptHost
     {

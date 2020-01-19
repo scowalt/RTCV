@@ -14,7 +14,7 @@ using NLog.Config;
 using NLog;
 using ScintillaNET;
 
-namespace RTCV.CorruptCore.Tools
+namespace RTCV.Common.Controls
 {
     public partial class ScriptManager : UserControl 
     {
@@ -32,7 +32,7 @@ namespace RTCV.CorruptCore.Tools
                 var logtextbox = new RichTextBoxTarget()
                 {
                     FormName = this.Name,
-                    TargetRichTextBox = tbLog,
+                    TargetRichTextBox = this.tbLog,
                     Layout = layout,
                     MaxLines = 10000,
                     AutoScroll = true,

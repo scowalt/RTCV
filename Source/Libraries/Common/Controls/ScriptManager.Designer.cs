@@ -1,4 +1,4 @@
-namespace RTCV.CorruptCore.Tools
+namespace RTCV.Common.Controls
 {
     partial class ScriptManager
     {
