@@ -60,15 +60,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\TabCtrlEX2.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Logging.cs" />
     <Compile Include="Objects\OperationResults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controls\TabControlEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,6 +86,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

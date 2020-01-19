@@ -28,24 +28,11 @@ namespace RTCV.CorruptCore.Tools
         /// </summary>
         private void InitializeComponent()
         {
-            this.tbCodeEditor = new System.Windows.Forms.RichTextBox();
             this.tbLog = new System.Windows.Forms.RichTextBox();
             this.btnRunSynchronously = new System.Windows.Forms.Button();
             this.btnRunAsync = new System.Windows.Forms.Button();
+            this.scintilla = new ScintillaNET.Scintilla();
             this.SuspendLayout();
-            // 
-            // tbCodeEditor
-            // 
-            this.tbCodeEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbCodeEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.tbCodeEditor.ForeColor = System.Drawing.Color.White;
-            this.tbCodeEditor.Location = new System.Drawing.Point(0, 0);
-            this.tbCodeEditor.Name = "tbCodeEditor";
-            this.tbCodeEditor.Size = new System.Drawing.Size(657, 248);
-            this.tbCodeEditor.TabIndex = 0;
-            this.tbCodeEditor.Text = "";
             // 
             // tbLog
             // 
@@ -85,15 +72,27 @@ namespace RTCV.CorruptCore.Tools
             this.btnRunAsync.UseVisualStyleBackColor = false;
             this.btnRunAsync.Click += new System.EventHandler(this.btnRunAsync_Click);
             // 
+            // scintilla
+            // 
+            this.scintilla.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scintilla.AnnotationVisible = ScintillaNET.Annotation.Standard;
+            this.scintilla.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.scintilla.Location = new System.Drawing.Point(0, 3);
+            this.scintilla.Name = "scintilla";
+            this.scintilla.Size = new System.Drawing.Size(654, 245);
+            this.scintilla.TabIndex = 4;
+            // 
             // ScriptManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.Controls.Add(this.scintilla);
             this.Controls.Add(this.btnRunAsync);
             this.Controls.Add(this.btnRunSynchronously);
             this.Controls.Add(this.tbLog);
-            this.Controls.Add(this.tbCodeEditor);
             this.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "ScriptManager";
@@ -103,10 +102,9 @@ namespace RTCV.CorruptCore.Tools
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox tbCodeEditor;
         private System.Windows.Forms.RichTextBox tbLog;
         private System.Windows.Forms.Button btnRunSynchronously;
         private System.Windows.Forms.Button btnRunAsync;
+        private ScintillaNET.Scintilla scintilla;
     }
 }
