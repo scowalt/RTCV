@@ -1,4 +1,4 @@
-﻿namespace RTCV.NetCore
+namespace RTCV.NetCore
 {
     public static class NetcoreCommands
     {
@@ -43,6 +43,7 @@
         public const string REMOTE_DISABLEKILLSWITCHSUPPORT = nameof(REMOTE_DISABLEKILLSWITCHSUPPORT);
         public const string REMOTE_DISABLEGAMEPROTECTIONSUPPORT = nameof(REMOTE_DISABLEGAMEPROTECTIONSUPPORT);
         public const string REMOTE_OPENHEXEDITOR = nameof(REMOTE_OPENHEXEDITOR);
+        public const string REMOTE_OPENSCRIPTHOST = nameof(REMOTE_OPENSCRIPTHOST);
 
         public const string REMOTE_BACKUPKEY_REQUEST = nameof(REMOTE_BACKUPKEY_REQUEST);
         public const string REMOTE_BACKUPKEY_STASH = nameof(REMOTE_BACKUPKEY_STASH);

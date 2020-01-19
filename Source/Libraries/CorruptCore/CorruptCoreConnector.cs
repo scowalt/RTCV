@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -138,6 +138,15 @@ namespace RTCV.CorruptCore
                             break;
                         }
 
+                    case REMOTE_OPENSCRIPTHOST:
+                        {
+                            SyncObjectSingleton.FormExecute(() =>
+                            {
+                                var sh = new ScriptHost();
+                                sh.Show();
+                            });
+                        }
+                        break;
                     case REMOTE_OPENHEXEDITOR:
                         {
                             if ((bool?)AllSpec.VanguardSpec[VSPEC.USE_INTEGRATED_HEXEDITOR] ?? false)

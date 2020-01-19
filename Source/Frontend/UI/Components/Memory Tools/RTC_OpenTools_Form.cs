@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using RTCV.CorruptCore;
 using RTCV.NetCore;
@@ -28,6 +28,11 @@ namespace RTCV.UI
             {
                 MessageBox.Show("Hex editor only works with real-time systems");
             }
+        }
+
+        private void btnOpenScriptHost_Click(object sender, EventArgs e)
+        {
+            LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_OPENSCRIPTHOST);
         }
     }
 }

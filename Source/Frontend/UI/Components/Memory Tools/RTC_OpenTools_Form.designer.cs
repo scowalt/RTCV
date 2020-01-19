@@ -30,7 +30,10 @@
         {
             this.btnOpenHexEditor = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbScriptHost = new System.Windows.Forms.GroupBox();
+            this.btnOpenScriptHost = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            this.gbScriptHost.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpenHexEditor
@@ -61,12 +64,41 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Hex Editor";
             // 
+            // gbScriptHost
+            // 
+            this.gbScriptHost.Controls.Add(this.btnOpenScriptHost);
+            this.gbScriptHost.ForeColor = System.Drawing.Color.White;
+            this.gbScriptHost.Location = new System.Drawing.Point(12, 94);
+            this.gbScriptHost.Name = "gbScriptHost";
+            this.gbScriptHost.Size = new System.Drawing.Size(366, 74);
+            this.gbScriptHost.TabIndex = 138;
+            this.gbScriptHost.TabStop = false;
+            this.gbScriptHost.Text = "Script Host";
+            // 
+            // btnOpenScriptHost
+            // 
+            this.btnOpenScriptHost.BackColor = System.Drawing.Color.Gray;
+            this.btnOpenScriptHost.FlatAppearance.BorderSize = 0;
+            this.btnOpenScriptHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenScriptHost.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnOpenScriptHost.ForeColor = System.Drawing.Color.White;
+            this.btnOpenScriptHost.Location = new System.Drawing.Point(6, 26);
+            this.btnOpenScriptHost.Name = "btnOpenScriptHost";
+            this.btnOpenScriptHost.Size = new System.Drawing.Size(354, 30);
+            this.btnOpenScriptHost.TabIndex = 136;
+            this.btnOpenScriptHost.TabStop = false;
+            this.btnOpenScriptHost.Tag = "color:light1";
+            this.btnOpenScriptHost.Text = "Open Script Host";
+            this.btnOpenScriptHost.UseVisualStyleBackColor = false;
+            this.btnOpenScriptHost.Click += new System.EventHandler(this.btnOpenScriptHost_Click);
+            // 
             // RTC_OpenTools_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(390, 250);
+            this.Controls.Add(this.gbScriptHost);
             this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI Symbol", 8F);
@@ -78,6 +110,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HandleFormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HandleMouseDown);
             this.groupBox1.ResumeLayout(false);
+            this.gbScriptHost.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -85,5 +118,7 @@
         #endregion
 		private System.Windows.Forms.Button btnOpenHexEditor;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbScriptHost;
+        private System.Windows.Forms.Button btnOpenScriptHost;
     }
 }
