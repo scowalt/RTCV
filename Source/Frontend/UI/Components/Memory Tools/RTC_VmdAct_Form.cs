@@ -22,7 +22,7 @@
         {
             InitializeComponent();
 
-            this.undockedSizable = false;
+            this.undockedSizable = false;;;;;;
         }
 
         public bool ActLoadedFromFile = false;
