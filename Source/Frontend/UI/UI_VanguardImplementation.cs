@@ -263,7 +263,6 @@ namespace RTCV.UI
                                     vmdgenerator.tbVmdName.Text = value.Trim();
                                 vmdgenerator.btnGenerateVMD_Click(null, null);
                             }
-
                         });
                         e.setReturnValue(true);
                         break;
