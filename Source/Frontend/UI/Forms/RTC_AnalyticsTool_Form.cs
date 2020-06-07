@@ -1,28 +1,18 @@
-<<<<<<< HEAD
-using System;
-using System.Windows.Forms;
-using RTCV.CorruptCore;
-using RTCV.NetCore;
-using RTCV.Common;
-using System.Collections.Generic;
-using System.IO;
-using System.Dynamic;
-using System.Runtime.Serialization.Formatters;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-
-namespace RTCV.UI
-=======
 ﻿namespace RTCV.UI
->>>>>>> b974bb8... Using namespaces inside namespace scope
 {
     using System;
     using System.Windows.Forms;
     using RTCV.CorruptCore;
     using RTCV.NetCore;
     using RTCV.Common;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Dynamic;
+    using System.Runtime.Serialization.Formatters;
+    using System.Threading.Tasks;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using System.Threading;
 
     public partial class RTC_AnalyticsTool_Form : Form, IAutoColorize
     {
@@ -66,9 +56,9 @@ namespace RTCV.UI
             foreach (var dump in memoryDumpPaths)
             {
                 var fi = new FileInfo(dump);
-                stf.DumpSource.Add(new { 
-                    key = fi.Name, 
-                    value = fi.FullName 
+                stf.DumpSource.Add(new {
+                    key = fi.Name,
+                    value = fi.FullName
                 });
             }
 
@@ -225,7 +215,7 @@ namespace RTCV.UI
 
             Task.WaitAll(tasks.ToArray());
             var returns = tasks.Select(it => (it as Task<(int cpu_i, int[] activity, int maxActivity)>).Result).OrderBy(it => it.cpu_i).ToArray();
-            
+
             int maxActivity = 0;
             List<int> fullActivity = new List<int>();
 

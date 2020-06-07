@@ -1,13 +1,4 @@
-<<<<<<< HEAD
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Forms;
-
-namespace RTCV.UI.Components.Controls
-=======
 ﻿namespace RTCV.UI.Components.Controls
->>>>>>> b974bb8... Using namespaces inside namespace scope
 {
     using System;
     using System.Collections.Generic;
@@ -195,7 +186,7 @@ namespace RTCV.UI.Components.Controls
 
         private void TbControlValue_MouseWheel(object sender, MouseEventArgs e)
         {
-            ((HandledMouseEventArgs)e).Handled = true;//disable default mouse wheel
+            ((HandledMouseEventArgs)e).Handled = true; //disable default mouse wheel
             if (e.Delta > 0)
             {
                 if (tbControlValue.Value + e.Delta <= tbControlValue.Maximum)

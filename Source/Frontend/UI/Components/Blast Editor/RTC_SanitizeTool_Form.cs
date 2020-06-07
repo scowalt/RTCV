@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-using System;
-using System.Linq;
-using System.Windows.Forms;
-using RTCV.CorruptCore;
-using RTCV.NetCore;
-using RTCV.Common;
-using NLog.LayoutRenderers;
-
-=======
->>>>>>> b974bb8... Using namespaces inside namespace scope
 namespace RTCV.UI
 {
     using System;
@@ -41,7 +30,7 @@ namespace RTCV.UI
                 }
             }
         }
-        
+
         public static void OpenSanitizeTool(BlastLayer bl = null)
         {
             S.GET<RTC_SanitizeTool_Form>().Close();
@@ -182,7 +171,7 @@ namespace RTCV.UI
             be.Show();
             be.WindowState = FormWindowState.Normal;
             be.BringToFront();
-            
+
         }
 
         private void btnLeaveSubstractChanges_Click(object sender, EventArgs e)
@@ -305,7 +294,7 @@ namespace RTCV.UI
         private void btnStartSanitizing_Click(object sender, EventArgs e)
         {
             btnStartSanitizing.Visible = false;
-            
+
 
             S.GET<RTC_NewBlastEditor_Form>().dgvBlastEditor.ClearSelection();
             S.GET<RTC_NewBlastEditor_Form>().btnDisable50_Click(null, null);

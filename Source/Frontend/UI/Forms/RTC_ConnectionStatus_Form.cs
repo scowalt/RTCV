@@ -1,14 +1,4 @@
-<<<<<<< HEAD
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using RTCV.Common;
-using static RTCV.UI.UI_Extensions;
-
-namespace RTCV.UI
-=======
 ﻿namespace RTCV.UI
->>>>>>> b974bb8... Using namespaces inside namespace scope
 {
     using System;
     using System.Drawing;
