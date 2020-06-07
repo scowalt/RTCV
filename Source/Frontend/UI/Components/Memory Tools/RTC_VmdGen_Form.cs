@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using System.Data;
 using System.Globalization;
@@ -8,7 +9,19 @@ using RTCV.Common;
 using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
+=======
+﻿namespace RTCV.UI
+>>>>>>> b974bb8... Using namespaces inside namespace scope
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Linq;
+    using System.Windows.Forms;
+    using RTCV.CorruptCore;
+    using RTCV.Common;
+    using static RTCV.UI.UI_Extensions;
+
     public partial class RTC_VmdGen_Form : ComponentForm, IAutoColorize, IBlockable
     {
         public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);

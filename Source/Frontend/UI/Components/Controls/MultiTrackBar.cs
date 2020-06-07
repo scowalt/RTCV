@@ -1,10 +1,19 @@
+<<<<<<< HEAD
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace RTCV.UI.Components.Controls
+=======
+﻿namespace RTCV.UI.Components.Controls
+>>>>>>> b974bb8... Using namespaces inside namespace scope
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Forms;
+
     public partial class MultiTrackBar : UserControl
     {
         public event EventHandler<ValueUpdateEventArgs> ValueChanged;

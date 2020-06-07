@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +9,19 @@ using RTCV.Common;
 using static RTCV.UI.UI_Extensions;
 
 namespace RTCV.UI
+=======
+﻿namespace RTCV.UI
+>>>>>>> b974bb8... Using namespaces inside namespace scope
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Windows.Forms;
+    using RTCV.CorruptCore;
+    using RTCV.NetCore;
+    using RTCV.Common;
+    using static RTCV.UI.UI_Extensions;
+
     public partial class RTC_StashHistory_Form : ComponentForm, IAutoColorize, IBlockable
     {
         public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);

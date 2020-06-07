@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using System.Windows.Forms;
 using RTCV.CorruptCore;
@@ -13,7 +14,16 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace RTCV.UI
+=======
+﻿namespace RTCV.UI
+>>>>>>> b974bb8... Using namespaces inside namespace scope
 {
+    using System;
+    using System.Windows.Forms;
+    using RTCV.CorruptCore;
+    using RTCV.NetCore;
+    using RTCV.Common;
+
     public partial class RTC_AnalyticsTool_Form : Form, IAutoColorize
     {
         public BlastLayer originalBlastLayer = null;
