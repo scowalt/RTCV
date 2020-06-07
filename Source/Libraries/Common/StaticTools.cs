@@ -201,7 +201,6 @@ namespace RTCV.Common
 
         public static void CreateConsole(string path = null)
         {
-
             if (!Debugger.IsAttached) //Don't override debugger's console
             {
                 ReleaseConsole();
