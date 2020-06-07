@@ -1195,7 +1195,7 @@ namespace RTCV.CorruptCore
                 {
                     usedAddresses.Add(new ValueTuple<string, long>(bu.Domain, bu.Address));
                 }
-                else if(!bu.IsLocked)
+                else if (!bu.IsLocked)
                 {
                     Layer.Remove(bu);
                 }
