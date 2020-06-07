@@ -172,7 +172,7 @@ namespace RTCV.UI
 
             IListFilter list;
 
-            if(newList.Contains("?"))
+            if (newList.Contains("?"))
             {
                 list = new NullableByteArrayList();
             }

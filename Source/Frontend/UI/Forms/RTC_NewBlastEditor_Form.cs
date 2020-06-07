@@ -609,7 +609,6 @@ namespace RTCV.UI
 
         private void UpDownLoopTiming_Validated(object sender, EventArgs e)
         {
-
             var value = upDownLoopTiming.Value;
             if (value > int.MaxValue)
             {

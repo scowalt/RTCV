@@ -76,8 +76,6 @@ namespace RTCV.UI
 
                         SyncObjectSingleton.FormExecute(() =>
                         {
-
-                            
                             if (UICore.FirstConnect)
                             {
                                 lastVanguardClient = (string)RTCV.NetCore.AllSpec.VanguardSpec?[VSPEC.NAME] ?? "VANGUARD";

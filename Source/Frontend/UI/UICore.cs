@@ -900,7 +900,7 @@ namespace RTCV.UI
                 return;
             }
 
-            
+
             //x.Substring(x.LastIndexOf('\\')+1)[0] != '$'
             //checks if first char is $
 

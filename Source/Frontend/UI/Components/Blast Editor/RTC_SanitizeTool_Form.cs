@@ -68,7 +68,6 @@ namespace RTCV.UI
 
             stf.UpdateSanitizeProgress();
             stf.ShowDialog();
-
         }
 
         private void RTC_NewBlastEditorForm_Load(object sender, EventArgs e)
@@ -171,7 +170,6 @@ namespace RTCV.UI
             be.Show();
             be.WindowState = FormWindowState.Normal;
             be.BringToFront();
-
         }
 
         private void btnLeaveSubstractChanges_Click(object sender, EventArgs e)
@@ -268,7 +266,7 @@ namespace RTCV.UI
 
             int original_remainder = originalSize;
             int original_maxsteps = 0;
-            while(original_remainder>1)
+            while (original_remainder>1)
             {
                 original_remainder = original_remainder / 2;
                 original_maxsteps++;
@@ -344,7 +342,6 @@ namespace RTCV.UI
         {
             if (S.GET<RTC_NewBlastEditor_Form>().AddStashToStockpile())
                 this.Close();
-
         }
         private void btnAddToStash_Click(object sender, EventArgs e)
         {
@@ -356,6 +353,5 @@ namespace RTCV.UI
             //S.GET<RTC_NewBlastEditor_Form>().LoadBlastlayer(originalBlastLayer);
             this.Close();
         }
-
     }
 }

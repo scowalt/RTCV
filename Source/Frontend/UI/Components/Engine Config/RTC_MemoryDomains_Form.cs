@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data;
+    using System.Drawing;
     using System.Linq;
     using System.Text;
     using System.Windows.Forms;
@@ -9,7 +10,6 @@
     using RTCV.NetCore;
     using RTCV.Common;
     using static RTCV.UI.UI_Extensions;
-    using System.Drawing;
 
     public partial class RTC_MemoryDomains_Form : ComponentForm, IAutoColorize, IBlockable
     {
@@ -209,7 +209,6 @@
                                 S.GET<RTC_VmdLimiterProfiler_Form>().AutoProfile(MemoryDomains.AllMemoryInterfaces[domain], limiter);
                             }
                         }
-
                     }).Enabled = (AutoLimitedDomains.Count > 0);
 
 

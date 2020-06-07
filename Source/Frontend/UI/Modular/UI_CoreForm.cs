@@ -4,12 +4,12 @@ namespace RTCV.UI
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Windows.Forms;
     using RTCV.CorruptCore;
     using RTCV.NetCore;
     using RTCV.Common;
     using RTCV.UI.Modular;
-    using System.Linq;
 
     public partial class UI_CoreForm : Form, IAutoColorize
     {

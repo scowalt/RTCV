@@ -2,17 +2,13 @@
 {
     using System;
     using System.Windows.Forms;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+    using System.Linq;
     using RTCV.CorruptCore;
     using RTCV.NetCore;
     using RTCV.Common;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Dynamic;
-    using System.Runtime.Serialization.Formatters;
-    using System.Threading.Tasks;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
-    using System.Threading;
 
     public partial class RTC_AnalyticsTool_Form : Form, IAutoColorize
     {
@@ -164,11 +160,9 @@
                 {
                     dumpSize = dump.Length;
                     nbWords = (dumpSize / WordSize);
-
                 }
 
                 AnalyticsCube.Push(dump, WordSize);
-
             }
 
             var cpus = Environment.ProcessorCount;
@@ -206,7 +200,6 @@
                     }
 
                     return (real_i, activity.ToArray(), maxActivity);
-
                 }, state: i);
 
                 tasks.Add(task);
@@ -219,7 +212,7 @@
             int maxActivity = 0;
             List<int> fullActivity = new List<int>();
 
-            foreach(var ret in returns)
+            foreach (var ret in returns)
             {
                 if (maxActivity < ret.maxActivity)
                     maxActivity = ret.maxActivity;
@@ -256,7 +249,7 @@
         {
             int activity = 0;
 
-            for(int i=0;i<stripe.Count;i++)
+            for (int i=0; i<stripe.Count; i++)
             {
                 if (i == 0)
                     continue;
@@ -266,7 +259,7 @@
                 byte[] prevWord = stripe[i - 1];
                 byte[] currentWord = stripe[i];
 
-                for (int j=0;j< currentWord.Length; j++)
+                for (int j=0; j< currentWord.Length; j++)
                 {
                     if (prevWord[j] != currentWord[j])
                     {
@@ -288,7 +281,8 @@
             {
                 return Cube[x][y];
             }
-            catch(Exception ex)
+            #pragma warning disable CS0168
+            catch (Exception ex)
             {
                 new object();
                 return null;
@@ -320,11 +314,10 @@
         {
             byte[] output = new byte[wordSize];
 
-            for(int i=0;i<wordSize;i++)
+            for (int i=0; i < wordSize; i++)
                 output[i] = dump[index + i];
 
             return output;
         }
     }
-
 }

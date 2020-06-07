@@ -225,7 +225,6 @@
 
             if (!AutoGenerate)
             {
-
                 //Selects back the VMD Pool menu
                 foreach (var item in UICore.mtForm.cbSelectBox.Items)
                 {
@@ -235,7 +234,6 @@
                         break;
                     }
                 }
-
             }
 
             return true;
@@ -248,7 +246,7 @@
             var ceForm = S.GET<RTC_CorruptionEngine_Form>();
 
             foreach (var item in cbSelectedMemoryDomain.Items)
-                if(item.ToString() == mi.ToString())
+                if (item.ToString() == mi.ToString())
                 {
                     cbSelectedMemoryDomain.SelectedItem = item;
                     break;
@@ -270,7 +268,6 @@
             tbVmdName.Text = $"{mi} -> {limiter}";
 
             GenerateVMD(true);
-
         }
 
         private void RTC_VmdLimiterProfiler_Form_Load(object sender, EventArgs e)
