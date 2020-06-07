@@ -43,6 +43,9 @@ Icon graciously provided by [ShyGuyXXL](https://twitter.com/shyguyxxl)
 - The Custom Engine allows you to create your own engine using the various corruption parameters.
 
 ## Development
+### Recommended: Visual Studio 2019
+[Visual Studio 2019: Community Edition](https://visualstudio.microsoft.com/vs/community/) is a free IDE for open-source projects, and is recommended for RTCV.
+
 ### Without Visual Studio
 
 1. Install [chocolatey](https://chocolatey.org/install)
