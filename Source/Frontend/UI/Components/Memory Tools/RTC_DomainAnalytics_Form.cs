@@ -1,20 +1,4 @@
-<<<<<<< HEAD
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Windows.Forms;
-using RTCV.CorruptCore;
-using RTCV.NetCore;
-using RTCV.Common;
-using static RTCV.UI.UI_Extensions;
-
-namespace RTCV.UI
-=======
 ﻿namespace RTCV.UI
->>>>>>> b974bb8... Using namespaces inside namespace scope
 {
     using System;
     using System.Collections.Generic;

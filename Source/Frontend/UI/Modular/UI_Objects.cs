@@ -1,4 +1,4 @@
-﻿namespace RTCV.UIg namespaces inside namespace scope
+﻿namespace RTCV.UI
 {
     using System;
     using System.Drawing;
