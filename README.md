@@ -52,3 +52,4 @@ Icon graciously provided by [ShyGuyXXL](https://twitter.com/shyguyxxl)
 1. `cinst -y visualstudio2019buildtools nuget.commandline`
 1. `nuget restore RTCV.sln`
 1. `msbuild.exe`
+    - `-property:GenerateFullPaths=true` will generate full paths to warnings and errors. Helpful for IDE integration.
