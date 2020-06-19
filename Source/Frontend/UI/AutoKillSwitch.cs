@@ -81,6 +81,7 @@ namespace RTCV.UI
                 logger.Trace("Exited KillEmulator {ShouldKillswitchFire} {UICore.FirstConnect} {!forceBypass} {!S.GET<UI_CoreForm>().cbUseAutoKillSwitch.Checked} {!forceBypass}", ShouldKillswitchFire, UICore.FirstConnect, !forceBypass, !S.GET<UI_CoreForm>().cbUseAutoKillSwitch.Checked, !forceBypass);
                 return;
             }
+
             logger.Trace("Thread id {0} requesting KillEmulator lockObject...", System.Threading.Thread.CurrentThread.ManagedThreadId);
             if (System.Threading.Monitor.TryEnter(lockObject)) // No re-entrancy on the killswitch
             {

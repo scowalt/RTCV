@@ -153,6 +153,7 @@ namespace RTCV.UI
 
             S.GET<RTC_GlitchHarvesterBlast_Form>().RedrawActionUI();
         }
+
         private bool IsControlDown()
         {
             return (Control.ModifierKeys & Keys.Control) != 0;
@@ -337,6 +338,7 @@ namespace RTCV.UI
                 {
                     dgvStockpile.Rows.Remove(row);
                 }
+
                 StockpileManager_UISide.StockpileChanged();
                 UnsavedEdits = true;
                 S.GET<RTC_GlitchHarvesterBlast_Form>().RedrawActionUI();

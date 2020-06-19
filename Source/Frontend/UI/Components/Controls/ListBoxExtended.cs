@@ -20,6 +20,7 @@
                     OnPreSelect();
                     break;
             }
+
             base.WndProc(ref m);
         }
 

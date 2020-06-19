@@ -32,6 +32,8 @@
                 tbSavestate.Text = key.Text;
                 tbSavestate.Visible = true;
             }
+
+
             btnSavestate.Text = number.ToString();
             tbSavestate.TextChanged += TbSavestate_TextChanged;
         }

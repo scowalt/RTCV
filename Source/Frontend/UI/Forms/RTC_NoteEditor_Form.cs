@@ -48,6 +48,7 @@
             {
                 this.Location = UICore.NoteBoxPosition;
             }
+
             if (UICore.NoteBoxSize != new Size(0, 0))
             {
                 this.Size = UICore.NoteBoxSize;
@@ -60,6 +61,7 @@
             {
                 this.Close();
             }
+
             if (e.KeyCode == Keys.Escape)
             {
                 this.Close();

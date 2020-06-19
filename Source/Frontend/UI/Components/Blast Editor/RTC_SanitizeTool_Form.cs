@@ -343,11 +343,13 @@ namespace RTCV.UI
             if (S.GET<RTC_NewBlastEditor_Form>().AddStashToStockpile())
                 this.Close();
         }
+
         private void btnAddToStash_Click(object sender, EventArgs e)
         {
             S.GET<RTC_NewBlastEditor_Form>().btnSendToStash_Click(null, null);
             this.Close();
         }
+
         private void btnLeaveNoChanges_Click(object sender, EventArgs e)
         {
             //S.GET<RTC_NewBlastEditor_Form>().LoadBlastlayer(originalBlastLayer);

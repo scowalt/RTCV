@@ -172,6 +172,7 @@ namespace RTCV.UI
 
                 SyncObjectSingleton.FormExecute(() => savestateBindingSource.Add(new SaveStateKey(key, ssk.Text[i])));
             }
+
             RtcCore.OnProgressBarUpdate(this, new ProgressBarEventArgs($"Done", 100));
         }
 
@@ -195,6 +196,7 @@ namespace RTCV.UI
                     return;
                 }
             }
+
             if (!File.Exists(fileName))
             {
                 MessageBox.Show("The Savestate Keys file wasn't found");
@@ -239,6 +241,7 @@ namespace RTCV.UI
                     allStashKeys.Add(sk);
                 }
             }
+
             allStashKeys.AddRange(StockpileManager_UISide.StashHistory);
             allStashKeys.AddRange(S.GET<RTC_NewBlastEditor_Form>().GetStashKeys());
             allStashKeys.AddRange(S.GET<RTC_BlastGenerator_Form>().GetStashKeys());
@@ -313,6 +316,7 @@ namespace RTCV.UI
                     ssk.StashKeys.Add(x.StashKey);
                     ssk.Text.Add(x.Text);
                 }
+
                 RtcCore.OnProgressBarUpdate(this, new ProgressBarEventArgs("Prepping TEMP", currentProgress += 5));
                 //clean temp folder
                 Stockpile.EmptyFolder(Path.Combine("WORKING", "TEMP"));

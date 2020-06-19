@@ -103,6 +103,7 @@ namespace RTCV.UI
             {
                 Render.StopRender();
             }
+
             logger.Trace("Exiting OneTimeExecute()");
         }
 

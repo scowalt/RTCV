@@ -37,6 +37,7 @@ namespace RTCV.UI
                     importList(f);
                 }
             }
+
             RefreshLists();
         }
 

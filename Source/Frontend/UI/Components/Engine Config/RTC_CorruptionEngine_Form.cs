@@ -80,6 +80,7 @@ namespace RTCV.UI
             {
                 cbVectorLimiterList_SelectedIndexChanged(cbVectorLimiterList, null);
             }
+
             if (CorruptCore.RtcCore.ValueListBindingSource.Count > 0)
             {
                 cbVectorValueList_SelectedIndexChanged(cbVectorValueList, null);
@@ -341,6 +342,7 @@ namespace RTCV.UI
 
                     break;
             }
+
             updatingMinMax = false;
         }
 
@@ -368,6 +370,7 @@ namespace RTCV.UI
                             precision = 8;
                             break;
                     }
+
                     CorruptCore.RtcCore.CurrentPrecision = precision;
 
                     UpdateMinMaxBoxes(precision);

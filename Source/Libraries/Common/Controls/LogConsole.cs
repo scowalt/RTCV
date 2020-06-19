@@ -17,6 +17,7 @@ namespace RTCV.Common.Forms
                 base.ForeColor = value;
             }
         }
+
         public override Color BackColor
         {
             get => base.BackColor;
@@ -86,6 +87,7 @@ namespace RTCV.Common.Forms
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, t);
             _logger = new LogFactory(config).GetCurrentClassLogger();
         }
+
         public void InitializeCustomLogger(int maxLines, Layout layout, string fileName = null)
         {
             if (layout == null)
@@ -110,6 +112,7 @@ namespace RTCV.Common.Forms
         {
             InitializeComponent();
         }
+
         public LogConsole(int maxLines, Layout customLayout, string fileName = null)
         {
             InitializeComponent();

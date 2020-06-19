@@ -84,6 +84,7 @@
                 }
             }
         }
+
         private long _Maximum = 65535;
         [Description("Maximum value of the control"), Category("Data")]
         public long Maximum

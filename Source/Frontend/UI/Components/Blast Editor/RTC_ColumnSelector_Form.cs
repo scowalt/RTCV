@@ -30,6 +30,7 @@
                 };
                 tablePanel.Controls.Add(cb);
             }
+
             this.Show();
         }
 
@@ -41,6 +42,7 @@
                 MessageBox.Show("Select at least one column");
                 return;
             }
+
             List<String> temp = new List<string>();
             StringBuilder sb = new StringBuilder();
             foreach (CheckBox cb in tablePanel.Controls.Cast<CheckBox>().Where(item => item.Checked))
@@ -50,11 +52,13 @@
                 sb.Append(cb.Name);
                 sb.Append(",");
             }
+
             if (S.GET<RTC_NewBlastEditor_Form>() != null)
             {
                 S.GET<RTC_NewBlastEditor_Form>().VisibleColumns = temp;
                 S.GET<RTC_NewBlastEditor_Form>().RefreshVisibleColumns();
             }
+
             RTCV.NetCore.Params.SetParam("BLASTEDITOR_VISIBLECOLUMNS", sb.ToString());
         }
     }

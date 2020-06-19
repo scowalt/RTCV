@@ -23,6 +23,7 @@ namespace RTCV.Plugins.ScriptHost
             var shTab = tc.SelectedTab as ScriptManagerTab;
             return shTab;
         }
+
         private ScriptManager GetCurrentManager()
         {
             return GetCurrentTab()?.ScriptManager;
@@ -68,11 +69,13 @@ namespace RTCV.Plugins.ScriptHost
                 MessageBox.Show($"Unable to save file. Error message: {e.Message}");
                 return;
             }
+
             var shortName = Path.GetFileNameWithoutExtension(filename);
             var t = GetCurrentTab();
             t.Name = shortName;
             t.Text = shortName;
         }
+
         private void LoadScript(string filename = null)
         {
             var tab = new ScriptManagerTab();
@@ -97,6 +100,7 @@ namespace RTCV.Plugins.ScriptHost
                     }
                 }
             }
+
             tab.ScriptManager.LoadScript(filename);
             var shortName = Path.GetFileNameWithoutExtension(filename);
             tab.Name = shortName;
