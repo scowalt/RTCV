@@ -184,6 +184,7 @@
                 if (newState)
                     _Modifiers |= ModifierKeys.Shift;
             }
+
             if (button == "RightShift") { _Modifiers &= ~ModifierKeys.Shift; if (newState) _Modifiers |= ModifierKeys.Shift; }
             if (button == "LeftControl") { _Modifiers &= ~ModifierKeys.Control; if (newState) _Modifiers |= ModifierKeys.Control; }
             if (button == "RightControl") { _Modifiers &= ~ModifierKeys.Control; if (newState) _Modifiers |= ModifierKeys.Control; }

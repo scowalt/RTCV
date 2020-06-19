@@ -1289,6 +1289,7 @@ namespace RTCV.CorruptCore
                     lastGood = childCmdLine;
                 }
             }
+
             string remainder = cmdLine.Substring(childCmdLine);
             string path = cmdLine.Substring(lastSlash, lastGood - lastSlash);
             return path + " " + remainder;

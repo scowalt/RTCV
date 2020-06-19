@@ -1137,6 +1137,7 @@ namespace RTCV.Plugins.HexEditor
             {
                 addresses[i] = _secondaryHighlightedAddresses[i];
             }
+
             //and add HighlightedAddress if present
             if (HighlightedAddress.HasValue)
             {
@@ -1450,47 +1451,57 @@ namespace RTCV.Plugins.HexEditor
 
         private void HexEditor_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.G)
+            if (e.Control)
             {
-                GoToAddressMenuItem_Click(sender, e);
-                return;
+                if (e.KeyCode == Keys.G)
+                {
+                    GoToAddressMenuItem_Click(sender, e);
+                    return;
+                }
+
+                if (e.KeyCode == Keys.P)
+                {
+                    PokeAddressMenuItem_Click(sender, e);
+                    return;
+                }
+
+                if (e.KeyCode == Keys.F)
+                {
+                    FindMenuItem_Click(sender, e);
+                    return;
+                }
+
+                if (e.KeyCode == Keys.C)
+                {
+                    CopyMenuItem_Click(sender, e);
+                    return;
+                }
+
+                if (e.KeyCode == Keys.E)
+                {
+                    ExportMenuItem_Click(sender, e);
+                    return;
+                }
+
+                if (e.KeyCode == Keys.V)
+                {
+                    PasteMenuItem_Click(sender, e);
+                    return;
+                }
             }
 
-            if (e.Control && e.KeyCode == Keys.P)
-            {
-                PokeAddressMenuItem_Click(sender, e);
-                return;
-            }
-            if (e.Control && e.KeyCode == Keys.F)
-            {
-                FindMenuItem_Click(sender, e);
-                return;
-            }
-            if (e.Control && e.KeyCode == Keys.C)
-            {
-                CopyMenuItem_Click(sender, e);
-                return;
-            }
-            if (e.Control && e.KeyCode == Keys.E)
-            {
-                ExportMenuItem_Click(sender, e);
-                return;
-            }
-            if (e.Control && e.KeyCode == Keys.V)
-            {
-                PasteMenuItem_Click(sender, e);
-                return;
-            }
             if (e.Shift && e.KeyCode == Keys.Delete)
             {
                 UnfreezeAllMenuItem_Click(sender, e);
                 return;
             }
+
             if (e.KeyCode == Keys.F2)
             {
                 FindNextMenuItem_Click(sender, e);
                 return;
             }
+
             if (e.KeyCode == Keys.F3)
             {
                 FindPrevMenuItem_Click(sender, e);

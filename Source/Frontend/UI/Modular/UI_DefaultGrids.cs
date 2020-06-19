@@ -60,6 +60,7 @@ namespace RTCV.UI.Modular
 
                     _engineConfig = ecGrid;
                 }
+
                 return _engineConfig;
             }
         }

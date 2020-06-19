@@ -26,10 +26,12 @@ namespace RTCV.Plugins.HexEditor
                             {
                                 S.SET(new HexEditor());
                             }
+
                             S.GET<HexEditor>().Restart();
                             S.GET<HexEditor>().Show();
                         });
                     }
+
                     break;
 
                 case NetcoreCommands.EMU_OPEN_HEXEDITOR_ADDRESS:
@@ -48,14 +50,17 @@ namespace RTCV.Plugins.HexEditor
                             {
                                 S.SET(new HexEditor());
                             }
+
                             S.GET<HexEditor>().Restart();
                             S.GET<HexEditor>().Show();
                             S.GET<HexEditor>().SetDomain(mi);
                             S.GET<HexEditor>().GoToAddress(address);
                         });
                     }
+
                     break;
             }
+
             return e.returnMessage;
         }
     }

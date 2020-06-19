@@ -458,6 +458,7 @@ namespace RTCV.UI
             {
                 PopulateModeCombobox(dgvBlastGenerator.Rows[e.RowIndex]);
             }
+
             if ((BlastGeneratorColumn)e.ColumnIndex == BlastGeneratorColumn.DgvDomain)
             {
                 UpdateAddressRange(dgvBlastGenerator.Rows[e.RowIndex]);
@@ -546,6 +547,7 @@ namespace RTCV.UI
                             proto = (BlastGeneratorProto)row.Cells["dgvBlastProtoReference"].Value;
                         }
                     }
+
                     protoList.Add(proto);
                 }
 

@@ -361,6 +361,7 @@ namespace RTCV.UI
                         cms.Items.Add(new ToolStripSeparator());
                         PopulateAddressContextMenu(dgvBlastEditor[e.ColumnIndex, e.RowIndex]);
                     }
+
                     cms.Show(dgvBlastEditor, dgvBlastEditor.PointToClient(Cursor.Position));
                 }
             }
@@ -1195,6 +1196,7 @@ namespace RTCV.UI
                     column.Visible = false;
                 }
             }
+
             dgvBlastEditor.Refresh();
         }
 
@@ -1384,6 +1386,7 @@ namespace RTCV.UI
             {
                 bu.IsEnabled = !bu.IsEnabled;
             }
+
             dgvBlastEditor.Refresh();
         }
 
@@ -1561,6 +1564,7 @@ namespace RTCV.UI
                 MessageBox.Show("There is no savestate selected in the Glitch Harvester, or the current selected box is empty");
                 return;
             }
+
             currentSK.ParentKey = null;
             currentSK.RomFilename = temp.RomFilename;
             currentSK.RomData = temp.RomData;

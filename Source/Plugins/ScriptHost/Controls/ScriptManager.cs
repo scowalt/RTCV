@@ -79,6 +79,7 @@ namespace RTCV.Plugins.ScriptHost.Controls
             {
                 ConfigureScintilla();
             }
+
             //CSScript.EvaluatorConfig.Access = EvaluatorAccess.Singleton;
         }
 
@@ -109,6 +110,7 @@ namespace RTCV.Plugins.ScriptHost.Controls
             scintilla.Text = script;
             return true;
         }
+
         public string GetScript()
         {
             return scintilla.Text;
@@ -143,6 +145,7 @@ namespace RTCV.Plugins.ScriptHost.Controls
             scintilla.SetKeywords(0, "abstract as base break case catch checked continue default delegate do else event explicit extern false finally fixed for foreach goto if implicit in interface internal is lock namespace new null object operator out override params private protected public readonly ref return sealed sizeof stackalloc switch this throw true try typeof unchecked unsafe using virtual while");
             scintilla.SetKeywords(1, "var dynamic bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void");
         }
+
         private void ConfigureScintillaDark()
         {
             // Configuring the default style with properties
@@ -188,6 +191,7 @@ namespace RTCV.Plugins.ScriptHost.Controls
                 logger.Error(ex, "Exception generating script.");
                 return;
             }
+
             try
             {
                 scr.Invoke(new[] { logger });
@@ -211,6 +215,7 @@ namespace RTCV.Plugins.ScriptHost.Controls
                 logger.Error(ex, "Exception generating script.");
                 return;
             }
+
             try
             {
                 scr.BeginInvoke(new[] { logger }, null, null);
