@@ -40,6 +40,7 @@ namespace RTCV.Plugins.HexEditor
                 S.GET<HexEditor>().HideOnClose = false;
                 S.GET<HexEditor>().Close();
             }
+
             return true;
         }
 

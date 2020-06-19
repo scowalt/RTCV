@@ -76,6 +76,7 @@
             {
                 return (T)ncam.objectValue;
             }
+
             return (T)returnValue;
         }
 

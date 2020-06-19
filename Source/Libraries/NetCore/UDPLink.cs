@@ -43,6 +43,7 @@ namespace RTCV.NetCore
                 System.Windows.Forms.Application.DoEvents();
                 Thread.Sleep(10);
             } //Lets wait for the thread to die
+
             ReaderThread = null;
 
             try { Sender.Close(); } catch { }
@@ -127,6 +128,7 @@ namespace RTCV.NetCore
                             throw ex;
                         }
                     }
+
                     if (bytes != null)
                     {
                         spec.Connector.hub.QueueMessage(new NetCoreSimpleMessage(Encoding.ASCII.GetString(bytes, 0, bytes.Length)));

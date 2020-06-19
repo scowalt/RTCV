@@ -85,8 +85,10 @@ namespace RTCV.PluginHost
                     }
                 }
             }
+
             initialized = true;
         }
+
         public void Shutdown()
         {
             foreach (var p in _loadedPlugins)

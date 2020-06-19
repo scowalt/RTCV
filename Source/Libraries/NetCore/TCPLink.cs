@@ -242,6 +242,7 @@ namespace RTCV.NetCore
                                     buf = serializer.Serialize(pendingMessage);
                                 }
                             }
+
                             //Write the length of the incoming object to the NetworkStream
                             byte[] length = BitConverter.GetBytes(buf.Length);
                             networkStream.Write(length, 0, length.Length);
@@ -368,6 +369,7 @@ namespace RTCV.NetCore
                     System.Windows.Forms.Application.DoEvents();
                     Thread.Sleep(10);
                 } //Lets wait for the thread to die
+
                 streamReadingThread = null;
             }
             catch { }
@@ -788,6 +790,7 @@ namespace RTCV.NetCore
                     PeerMessageQueue.AddLast(message);
                 }
             }
+
             if (ConsoleEx.ShowDebug)
             {
                 logger.Trace("side} -> Sent advanced message \"{Type}\", priority:{Priority}", spec.Side, message.Type, priority);

@@ -583,6 +583,7 @@ namespace RTCV.CorruptCore
 
                         return value;
                     }
+
                 case 4:
                     {
                         byte[] value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
@@ -593,6 +594,7 @@ namespace RTCV.CorruptCore
 
                         return value;
                     }
+
                 case 8:
                     {
                         byte[] value = BitConverter.GetBytes(Convert.ToUInt64(newValue));
@@ -624,6 +626,7 @@ namespace RTCV.CorruptCore
 
                         return value;
                     }
+
                 case 4:
                     {
                         byte[] value = BitConverter.GetBytes(Convert.ToUInt32(newValue));
@@ -634,6 +637,7 @@ namespace RTCV.CorruptCore
 
                         return value;
                     }
+
                 case 8:
                     {
                         byte[] value = BitConverter.GetBytes(newValue);

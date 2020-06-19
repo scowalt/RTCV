@@ -953,14 +953,17 @@ namespace RTCV.UI
             {
                 cbLimiterTime.Items.Add(item);
             }
+
             foreach (var item in Enum.GetValues(typeof(StoreLimiterSource)))
             {
                 cbStoreLimiterSource.Items.Add(item);
             }
+
             foreach (var item in Enum.GetValues(typeof(StoreTime)))
             {
                 cbStoreTime.Items.Add(item);
             }
+
             foreach (var item in blastUnitSource)
             {
                 cbSource.Items.Add(item);
@@ -1163,6 +1166,7 @@ namespace RTCV.UI
                     cbFilterColumn.Items.Add(new ComboBoxItem<string>(column.HeaderText, column.Name));
                 }
             }
+
             cbFilterColumn.SelectedIndex = 0;
         }
 
@@ -1428,6 +1432,7 @@ namespace RTCV.UI
             {
                 bu.IsEnabled = false;
             }
+
             dgvBlastEditor.Refresh();
         }
 

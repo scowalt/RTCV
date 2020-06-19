@@ -65,9 +65,11 @@ namespace RTCV.NetCore
                     Interlocked.Decrement(ref activeWatches);
                     return null;
                 }
+
                 //Let it up the chain if it's not a cancellation
                 throw;
             }
+
             Interlocked.Decrement(ref activeWatches);
             return result;
         }

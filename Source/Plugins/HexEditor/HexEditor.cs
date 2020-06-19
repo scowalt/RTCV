@@ -1000,6 +1000,7 @@ namespace RTCV.Plugins.HexEditor
             {
                 text = string.Join("\n", ordered.Select(it => ToHexString(it)));
             }
+
             CreateVmdText(domain, text);
         }
 

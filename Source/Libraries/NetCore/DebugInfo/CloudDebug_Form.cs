@@ -151,6 +151,7 @@ namespace RTCV.NetCore
                 {
                     sb.AppendLine(key + " : " + ex.Data[key]);
                 }
+
                 File.WriteAllText(data, sb.ToString());
 
                 //Exporting Specs from RTC's perspective
@@ -293,6 +294,7 @@ namespace RTCV.NetCore
                         }));
                     }
                 }
+
                 columnsMenu.Show(this, locate);
             }
         }

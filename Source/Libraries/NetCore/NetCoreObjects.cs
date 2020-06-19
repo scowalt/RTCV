@@ -52,6 +52,7 @@ namespace RTCV.NetCore
         public NetCoreSimpleMessage()
         {
         }
+
         public NetCoreSimpleMessage(string _Type)
         {
             Type = _Type.Trim().ToUpper();
@@ -70,6 +71,7 @@ namespace RTCV.NetCore
         public NetCoreAdvancedMessage()
         {
         }
+
         public NetCoreAdvancedMessage(string _Type)
         {
             Type = _Type.Trim().ToUpper();

@@ -478,6 +478,7 @@ namespace RTCV.NetCore
                 {
                     return new TypeWrapper<T>(value);
                 }
+
                 // Return actual type of subclass
                 return (TypeWrapper)Activator.CreateInstance(typeof(TypeWrapper<>).MakeGenericType(type), value);
             }

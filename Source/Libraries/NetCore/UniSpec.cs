@@ -199,6 +199,7 @@
                 */
                 sb.AppendLine(t + x.ToString());
             }
+
             return sb.ToString();
         }
     }
@@ -273,6 +274,7 @@
             {
                 return (T)value;
             }
+
             return default(T);
         }
 

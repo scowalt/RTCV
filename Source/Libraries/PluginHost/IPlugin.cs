@@ -8,6 +8,7 @@ namespace RTCV.PluginHost
         Client,
         Both
     }
+
     public interface IPlugin : IDisposable
     {
         string Name { get; }

@@ -10,6 +10,7 @@ namespace RTCV.Plugins.HexEditor
         {
             LocalNetCoreRouter.registerEndpoint(this, "HEXEDITOR");
         }
+
         public object OnMessageReceived(object sender, NetCoreEventArgs e)
         {
             //Use setReturnValue to handle returns
