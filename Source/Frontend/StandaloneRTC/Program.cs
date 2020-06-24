@@ -6,17 +6,17 @@
     using System.Threading;
     using System.Windows.Forms;
 
-    static class Program
+    internal static class Program
     {
-        static Form loaderObject;
+        private static Form loaderObject;
 
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            using (Mutex mutex = new Mutex(true, "StandaloneRTC", out bool createdNew))
+            using (var mutex = new Mutex(true, "StandaloneRTC", out var createdNew))
             {
                 if (createdNew)
                 {
@@ -56,13 +56,13 @@
         /// <param name="e"></param>
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Exception ex = (Exception)e.ExceptionObject;
+            var ex = (Exception)e.ExceptionObject;
             Form error = new RTCV.NetCore.CloudDebug(ex);
-            var result = error.ShowDialog();
+            error.ShowDialog();
         }
 
         /// <summary>
-        /// Global exceptions in User Interface anticipated error
+        /// Global exceptions in User Interface anticipated error.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -74,30 +74,32 @@
 
             if (result == DialogResult.Abort)
             {
-                RTCV.NetCore.SyncObjectSingleton.SyncObjectExecute(loaderObject, (o, ea) => { loaderObject.Close(); });
+                RTCV.NetCore.SyncObjectSingleton.SyncObjectExecute(loaderObject, (o, ea) => loaderObject.Close() );
             }
         }
 
         //Lifted from Bizhawk
-        static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             try
             {
-                string requested = args.Name;
+                var requested = args.Name;
                 lock (AppDomain.CurrentDomain)
                 {
                     var asms = AppDomain.CurrentDomain.GetAssemblies();
                     foreach (var asm in asms)
+                    {
                         if (asm.FullName == requested)
                         {
                             return asm;
                         }
+                    }
 
                     //load missing assemblies by trying to find them in the dll directory
-                    string dllname = new AssemblyName(requested).Name + ".dll";
-                    string directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                    string simpleName = new AssemblyName(requested).Name;
-                    string fname = Path.Combine(directory, dllname);
+                    var dllname = new AssemblyName(requested).Name + ".dll";
+                    var directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                    var simpleName = new AssemblyName(requested).Name;
+                    var fname = Path.Combine(directory, dllname);
                     if (!File.Exists(fname))
                     {
                         return null;
