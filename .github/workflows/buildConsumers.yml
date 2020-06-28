@@ -9,7 +9,7 @@ on:
       - '505' # Bizhawk and CemuStub depend on RTCV 505
 
 jobs:
-  buildBizhawk:
+  Bizhawk:
     runs-on: windows-2019
     steps:
     # Checkout relevant code
@@ -42,7 +42,7 @@ jobs:
     - name: Build Bizhawk-Vanguard
       run: msbuild '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
 
-  buildCemuStub:
+  CemuStub:
     runs-on: windows-2019
     steps:
     # Checkout relevant code
@@ -75,7 +75,7 @@ jobs:
     - name: Build CemuStub-Vanguard
       run: msbuild '.\CemuStub-Vanguard\'
 
-  buildFileStub:
+  FileStub:
     runs-on: windows-2019
     steps:
     # Checkout relevant code
@@ -108,7 +108,7 @@ jobs:
     - name: Build FileStub-Vanguard
       run: msbuild '.\FileStub-Vanguard\FileStub-Vanguard.sln'
 
-  buildUnityStub:
+  UnityStub:
     runs-on: windows-2019
     steps:
     # Checkout relevant code
@@ -141,7 +141,7 @@ jobs:
     - name: Build UnityStub-Vanguard
       run: msbuild '.\UnityStub-Vanguard\UnityStub-Vanguard.sln'
 
-  buildProcessStub:
+  ProcessStub:
     runs-on: windows-2019
     steps:
     # Checkout relevant code
@@ -152,7 +152,7 @@ jobs:
     - name: Checkout ProcessStub
       uses: actions/checkout@v2
       with:
-        repository: 'ircluzar/ProcessStub-Vanguard'
+        repository: 'NarryG/ProcessStub-Vanguard'
         ref: 'master'
         path: 'ProcessStub-Vanguard'
 
