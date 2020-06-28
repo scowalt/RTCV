@@ -3,12 +3,13 @@ on:
   push:
     branches:
       - '505' # Bizhawk and CemuStub depend on RTCV 505
+      - 'GithubActionTest'
   pull_request:
     branches:
       - '505' # Bizhawk and CemuStub depend on RTCV 505
 
 jobs:
-  buildAll:
+  buildBizhawk:
     runs-on: windows-2019
     steps:
     # Checkout relevant code
@@ -22,7 +23,34 @@ jobs:
         repository: 'ircluzar/Bizhawk-Vanguard'
         ref: 'master'
         path: 'Bizhawk-Vanguard'
-    - name: Checkout consumer - CemuStub
+
+    # Setup Tooling
+    - name: Setup Nuget
+      uses: nuget/setup-nuget@v1.0.2
+      with:
+        nuget-version: 'latest'
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.0
+
+    # Restore nuget packages for all targets
+    - name: Restore Nuget packages in current build target
+      run: nuget restore '.\RTCV\'
+    - name: Restore Nuget packages in consumer - Bizhawk
+      run: nuget restore '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
+
+    # Build Bizhawk
+    - name: Build Bizhawk-Vanguard
+      run: msbuild '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
+
+  buildCemuStub:
+    runs-on: windows-2019
+    steps:
+    # Checkout relevant code
+    - name: Checkout current build target
+      uses: actions/checkout@v2
+      with:
+        path: 'RTCV'
+    - name: Checkout CemuStub
       uses: actions/checkout@v2
       with:
         repository: 'ircluzar/CemuStub-Vanguard'
@@ -40,13 +68,9 @@ jobs:
     # Restore nuget packages for all targets
     - name: Restore Nuget packages in current build target
       run: nuget restore '.\RTCV\'
-    - name: Restore Nuget packages in consumer - Bizhawk
-      run: nuget restore '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
     - name: Restore Nuget packages in consumer - CemuStub
       run: nuget restore '.\CemuStub-Vanguard\'
 
-    # Build consumers  of RTCV
-    - name: Build Bizhawk-Vanguard
-      run: msbuild '.\Bizhawk-Vanguard\Real-Time Corruptor\BizHawk_RTC\BizHawk.sln'
+    # Build CemuStub
     - name: Build CemuStub-Vanguard
       run: msbuild '.\CemuStub-Vanguard\'
