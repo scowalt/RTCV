@@ -229,8 +229,6 @@ jobs:
       uses: nuget/setup-nuget@v1.0.2
       with:
         nuget-version: 'latest'
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.0
 
     # Restore nuget packages for all targets
     - name: Restore Nuget packages in current build target
@@ -238,4 +236,4 @@ jobs:
 
     # Build pcsx2
     - name: Build pcsx2
-      run: msbuild '.\pcsx2-vanguard\buildbot.xml'
+      run: "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\Current\Bin\MSBuild.exe" '.\pcsx2-vanguard\buildbot.xml'
