@@ -236,4 +236,5 @@ jobs:
 
     # Build pcsx2
     - name: Build pcsx2
-      run: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\Current\Bin\MSBuild.exe" '.\pcsx2-vanguard\buildbot.xml'
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\bin\MSBuild.exe" '.\pcsx2-vanguard\buildbot.xml'
