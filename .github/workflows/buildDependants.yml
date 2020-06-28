@@ -198,7 +198,7 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.0
       with:
-        vs-version: "[16.5,16.5]" # qt isn't compatible with 16.6, see https://bugreports.qt.io/browse/QTBUG-84353
+        vs-version: "16.5" # qt isn't compatible with 16.6, see https://bugreports.qt.io/browse/QTBUG-84353
 
     # Restore nuget packages for all targets
     - name: Restore Nuget packages in current build target
