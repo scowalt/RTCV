@@ -275,8 +275,8 @@ jobs:
       run: C:\tools\msys64\usr\bin\bash.exe -lc "pacman -Sq --noconfirm git make mingw-w64-x86_64-{cmake,mesa,SDL2,qt5-static,toolchain}"
     - name: Create build environment
       run: |
-        New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\melonDS-vanguard\build
-        Copy-Item -Path ${{runner.workspace}}\RTCV\melonDS-vanguard -Destination C:\tools\msys64\home\runneradmin -Recurse
+        New-Item -ItemType directory -Path ${{runner.workspace}}\melonDS-vanguard\build
+        Copy-Item -Path ${{runner.workspace}}\melonDS-vanguard -Destination C:\tools\msys64\home\runneradmin -Recurse
     - name: Configure
       run: |
         C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
@@ -286,3 +286,42 @@ jobs:
         C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
         && cd melonDS-vanguard/build && make -j$(nproc --all) \
         && ../msys-dist.sh"
+
+  Citra:
+    runs-on: windows-2019
+    steps:
+    # Checkout code
+    - name: Checkout current build target
+      uses: actions/checkout@v2
+      with:
+        path: 'RTCV'
+    - name: Checkout Citra
+      uses: actions/checkout@v2
+      with:
+        repository: 'NarryG/citra-vanguard'
+        ref: 'Vanguard'
+        path: 'citra-vanguard'
+        submodules: 'recursive'
+
+    # Setup RTCV
+    - name: Setup Nuget
+      uses: nuget/setup-nuget@v1.0.2
+      with:
+        nuget-version: 'latest'
+    - name: Restore Nuget packages in current build target
+      run: nuget restore '.\RTCV\'
+
+    # Citra build
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.0
+    - name: Make directory for citra output
+      working-directory: ${{runner.workspace}}\citra-vanguard
+      run: mkdir build
+    - name: Citra prebuild
+      working-directory: ${{runner.workspace}}\citra-vanguard\build
+      shell: cmd
+      run: cmake -G "CitraVanguardRTCV" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DCITRA_ENABLE_COMPATIBILITY_REPORTING=${COMPAT} -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON -DUSE_DISCORD_PRESENCE=ON  -DENABLE_MF=ON -DENABLE_FFMPEG_VIDEO_DUMPER=ON .. 2>&1 && exit 0
+    - name: Citra build
+      working-directory: ${{runner.workspace}}\citra-vanguard\build
+      run: msbuild CitraVanguardRTCV/citra.sln
+    
