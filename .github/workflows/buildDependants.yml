@@ -265,30 +265,25 @@ jobs:
       run: nuget restore '.\RTCV\'
 
     # Build melonDS
-    - name: Test MSYS2
+    - name: Install MSYS2
       run: |
         C:\msys64\usr\bin\bash.exe -lc "pacman -Syuq --noconfirm"
-    # - name: Install MSYS2
-    #   working-directory: ${{runner.workspace}}
-    #   run: | # Fetch MSYS2 build from XQEmu. Official distribution causes a CI failure due to permission errors.
-    #     Invoke-WebRequest -Uri "https://github.com/xqemu/ci-environment-msys2/releases/latest/download/msys64.7z" -OutFile "msys64.7z"
-    #     7z x -y msys64.7z "-oC:\tools\"
-    #     C:\tools\msys64\usr\bin\bash.exe -lc "pacman -Syuq --noconfirm"
-    # - name: Install dependencies
-    #   run: C:\tools\msys64\usr\bin\bash.exe -lc "pacman -Sq --noconfirm git make mingw-w64-x86_64-{cmake,mesa,SDL2,qt5-static,toolchain}"
-    # - name: Create build environment
-    #   run: |
-    #     New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\melonDS-vanguard\build
-    #     Copy-Item -Path ${{runner.workspace}}\RTCV\melonDS-vanguard -Destination C:\tools\msys64\home\runneradmin -Recurse
-    # - name: Configure
-    #   run: |
-    #     C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
-    #     && cd melonDS-vanguard/build && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/tools/msys64/mingw64/qt5-static"
-    # - name: Make
-    #   run: |
-    #     C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
-    #     && cd melonDS-vanguard/build && make -j$(nproc --all) \
-    #     && ../msys-dist.sh"
+    - name: Install MSYS2 dependencies
+      run: |
+        C:\msys64\usr\bin\bash.exe -lc "pacman -Sq --noconfirm git make mingw-w64-x86_64-{cmake,mesa,SDL2,qt5-static,toolchain}"
+    - name: Create build environment
+      run: |
+        New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\melonDS-vanguard\build
+        Copy-Item -Path ${{runner.workspace}}\RTCV\melonDS-vanguard -Destination C:\tools\msys64\home\runneradmin -Recurse
+    - name: Configure
+      run: |
+        C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
+        && cd melonDS-vanguard/build && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/tools/msys64/mingw64/qt5-static"
+    - name: Make
+      run: |
+        C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
+        && cd melonDS-vanguard/build && make -j$(nproc --all) \
+        && ../msys-dist.sh"
 
   Citra:
     runs-on: windows-2019
