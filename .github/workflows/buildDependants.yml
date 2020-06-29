@@ -275,8 +275,8 @@ jobs:
       run: C:\tools\msys64\usr\bin\bash.exe -lc "pacman -Sq --noconfirm git make mingw-w64-x86_64-{cmake,mesa,SDL2,qt5-static,toolchain}"
     - name: Create build environment
       run: |
-        New-Item -ItemType directory -Path ${{runner.workspace}}\melonDS-vanguard\build
-        Copy-Item -Path ${{runner.workspace}}\melonDS-vanguard -Destination C:\tools\msys64\home\runneradmin -Recurse
+        New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\melonDS-vanguard\build
+        Copy-Item -Path ${{runner.workspace}}\RTCV\melonDS-vanguard -Destination C:\tools\msys64\home\runneradmin -Recurse
     - name: Configure
       run: |
         C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
