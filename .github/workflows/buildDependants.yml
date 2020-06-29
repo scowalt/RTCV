@@ -322,5 +322,5 @@ jobs:
     - name: Citra Build
       run: |
         cd ${{runner.workspace}}\RTCV\citra-vanguard\build
-        & "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\bin\MSBuild.exe" citra.sln /bigobj
+        & "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\bin\MSBuild.exe" citra.sln
     
