@@ -244,27 +244,10 @@ jobs:
   melonDS:
     runs-on: windows-2019
     steps:
-    # Checkout relevant code
-    - name: Checkout current build target
-      uses: actions/checkout@v2
-      with:
-        path: 'RTCV'
-    - name: Checkout melonDS
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
       with:
         repository: 'NarryG/melonDS-Vanguard'
         ref: 'Vanguard'
-        path: 'melonDS-vanguard'
-
-    # Setup RTCV
-    - name: Setup Nuget
-      uses: nuget/setup-nuget@v1.0.2
-      with:
-        nuget-version: 'latest'
-    - name: Restore Nuget packages in current build target
-      run: nuget restore '.\RTCV\'
-
-    # Build melonDS
     - name: Install MSYS2
       working-directory: ${{runner.workspace}}
       run: | # Fetch MSYS2 build from XQEmu. Official distribution causes a CI failure due to permission errors.
@@ -275,16 +258,16 @@ jobs:
       run: C:\tools\msys64\usr\bin\bash.exe -lc "pacman -Sq --noconfirm git make mingw-w64-x86_64-{cmake,mesa,SDL2,qt5-static,toolchain}"
     - name: Create build environment
       run: |
-        New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\melonDS-vanguard\build
-        Copy-Item -Path ${{runner.workspace}}\RTCV\melonDS-vanguard -Destination C:\tools\msys64\home\runneradmin -Recurse
+        New-Item -ItemType directory -Path ${{runner.workspace}}\melonDS\build
+        Copy-Item -Path ${{runner.workspace}}\melonDS -Destination C:\tools\msys64\home\runneradmin -Recurse
     - name: Configure
       run: |
         C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
-        && cd melonDS-vanguard/build && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/tools/msys64/mingw64/qt5-static"
+        && cd melonDS/build && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/tools/msys64/mingw64/qt5-static"
     - name: Make
       run: |
         C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
-        && cd melonDS-vanguard/build && make -j$(nproc --all) \
+        && cd melonDS/build && make -j$(nproc --all) \
         && ../msys-dist.sh"
 
   Citra:
