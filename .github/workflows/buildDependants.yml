@@ -286,7 +286,7 @@ jobs:
         && ../msys-dist.sh"
 
   Citra:
-    runs-on: windows-2019
+    runs-on: windows-2016
     steps:
     # Checkout code
     - name: Checkout current build target
@@ -310,18 +310,18 @@ jobs:
       run: nuget restore '.\RTCV\'
 
     # Citra build
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.0
+    # - name: Setup MSBuild.exe
+    #   uses: microsoft/setup-msbuild@v1.0.0
     - name: Make directory for citra output
       shell: powershell
       run: New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\citra-vanguard\build
-    - name: Citra prebuild
+    - name: Citra prebuild # "Visual Studio 16 2019" doesn't work
       shell: cmd
       run: |
         cd ${{runner.workspace}}\RTCV\citra-vanguard\build
-        cmake -G "Visual Studio 16 2019" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DCITRA_ENABLE_COMPATIBILITY_REPORTING=${COMPAT} -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON -DUSE_DISCORD_PRESENCE=ON  -DENABLE_MF=ON -DENABLE_FFMPEG_VIDEO_DUMPER=ON .. 2>&1 && exit 0
+        cmake -G "Visual Studio 15 2017 Win64" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DCITRA_ENABLE_COMPATIBILITY_REPORTING=${COMPAT} -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON -DUSE_DISCORD_PRESENCE=ON  -DENABLE_MF=ON -DENABLE_FFMPEG_VIDEO_DUMPER=ON .. 2>&1 && exit 0
     - name: Citra Build
       run: |
         cd ${{runner.workspace}}\RTCV\citra-vanguard\build
-        msbuild citra.sln
+        & "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\bin\MSBuild.exe" citra.sln
     
