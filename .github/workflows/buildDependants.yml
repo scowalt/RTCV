@@ -299,7 +299,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: 'NarryG/citra-vanguard'
-        ref: 'Vanguard'
+        ref: 'vanguard'
         path: 'citra-vanguard'
         submodules: 'recursive'
 
