@@ -274,14 +274,14 @@ jobs:
     - name: Create build environment
       run: |
         New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\melonDS-vanguard\build
-        Copy-Item -Path ${{runner.workspace}}\RTCV\melonDS-vanguard -Destination C:\tools\msys64\home\runneradmin -Recurse
+        Copy-Item -Path ${{runner.workspace}}\RTCV\melonDS-vanguard -Destination C:\msys64\home\runneradmin -Recurse
     - name: Configure
       run: |
-        C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
-        && cd melonDS-vanguard/build && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/tools/msys64/mingw64/qt5-static"
+        C:\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
+        && cd melonDS-vanguard/build && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/msys64/mingw64/qt5-static"
     - name: Make
       run: |
-        C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
+        C:\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
         && cd melonDS-vanguard/build && make -j$(nproc --all) \
         && ../msys-dist.sh"
 
