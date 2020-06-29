@@ -244,31 +244,51 @@ jobs:
   melonDS:
     runs-on: windows-2019
     steps:
-    - uses: actions/checkout@v2
+    # Checkout relevant code
+    - name: Checkout current build target
+      uses: actions/checkout@v2
+      with:
+        path: 'RTCV'
+    - name: Checkout melonDS
+      uses: actions/checkout@v2
       with:
         repository: 'NarryG/melonDS-Vanguard'
         ref: 'Vanguard'
-    - name: Install MSYS2
-      working-directory: ${{runner.workspace}}
-      run: | # Fetch MSYS2 build from XQEmu. Official distribution causes a CI failure due to permission errors.
-        Invoke-WebRequest -Uri "https://github.com/xqemu/ci-environment-msys2/releases/latest/download/msys64.7z" -OutFile "msys64.7z"
-        7z x -y msys64.7z "-oC:\tools\"
-        C:\tools\msys64\usr\bin\bash.exe -lc "pacman -Syuq --noconfirm"
-    - name: Install dependencies
-      run: C:\tools\msys64\usr\bin\bash.exe -lc "pacman -Sq --noconfirm git make mingw-w64-x86_64-{cmake,mesa,SDL2,qt5-static,toolchain}"
-    - name: Create build environment
+        path: 'melonDS-vanguard'
+
+    # Setup RTCV
+    - name: Setup Nuget
+      uses: nuget/setup-nuget@v1.0.2
+      with:
+        nuget-version: 'latest'
+    - name: Restore Nuget packages in current build target
+      run: nuget restore '.\RTCV\'
+
+    # Build melonDS
+    - name: Test MSYS2
       run: |
-        New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\build
-        Copy-Item -Path ${{runner.workspace}}\RTCV -Destination C:\tools\msys64\home\runneradmin -Recurse
-    - name: Configure
-      run: |
-        C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
-        && cd RTCV/build && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/tools/msys64/mingw64/qt5-static"
-    - name: Make
-      run: |
-        C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
-        && cd RTCV/build && make -j$(nproc --all) \
-        && ../msys-dist.sh"
+        C:\msys64\pacman -Syuq --noconfirm
+    # - name: Install MSYS2
+    #   working-directory: ${{runner.workspace}}
+    #   run: | # Fetch MSYS2 build from XQEmu. Official distribution causes a CI failure due to permission errors.
+    #     Invoke-WebRequest -Uri "https://github.com/xqemu/ci-environment-msys2/releases/latest/download/msys64.7z" -OutFile "msys64.7z"
+    #     7z x -y msys64.7z "-oC:\tools\"
+    #     C:\tools\msys64\usr\bin\bash.exe -lc "pacman -Syuq --noconfirm"
+    # - name: Install dependencies
+    #   run: C:\tools\msys64\usr\bin\bash.exe -lc "pacman -Sq --noconfirm git make mingw-w64-x86_64-{cmake,mesa,SDL2,qt5-static,toolchain}"
+    # - name: Create build environment
+    #   run: |
+    #     New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\melonDS-vanguard\build
+    #     Copy-Item -Path ${{runner.workspace}}\RTCV\melonDS-vanguard -Destination C:\tools\msys64\home\runneradmin -Recurse
+    # - name: Configure
+    #   run: |
+    #     C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
+    #     && cd melonDS-vanguard/build && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/tools/msys64/mingw64/qt5-static"
+    # - name: Make
+    #   run: |
+    #     C:\tools\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
+    #     && cd melonDS-vanguard/build && make -j$(nproc --all) \
+    #     && ../msys-dist.sh"
 
   Citra:
     runs-on: windows-2019
@@ -301,12 +321,10 @@ jobs:
       shell: powershell
       run: New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\citra-vanguard\build
     - name: Citra prebuild
-      shell: powershell
-      run: |
-        cd ${{runner.workspace}}\RTCV\citra-vanguard\build
-        cmake -G "CitraVanguardRTCV" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON -DUSE_DISCORD_PRESENCE=ON -DENABLE_MF=ON -DENABLE_FFMPEG_VIDEO_DUMPER=ON ..
+      working-directory: ${{runner.workspace}}\citra-vanguard\build
+      shell: cmd
+      run: cmake -G "CitraVanguardRTCV" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DCITRA_ENABLE_COMPATIBILITY_REPORTING=${COMPAT} -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON -DUSE_DISCORD_PRESENCE=ON  -DENABLE_MF=ON -DENABLE_FFMPEG_VIDEO_DUMPER=ON .. 2>&1 && exit 0
     - name: Citra build
-      run: |
-        cd ${{runner.workspace}}\RTCV\citra-vanguard\build
-        msbuild CitraVanguardRTCV/citra.sln
+      working-directory: ${{runner.workspace}}\citra-vanguard\build
+      run: msbuild CitraVanguardRTCV/citra.sln
     
