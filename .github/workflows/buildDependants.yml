@@ -321,10 +321,12 @@ jobs:
       shell: powershell
       run: New-Item -ItemType directory -Path ${{runner.workspace}}\RTCV\citra-vanguard\build
     - name: Citra prebuild
-      working-directory: ${{runner.workspace}}\citra-vanguard\build
       shell: cmd
-      run: cmake -G "CitraVanguardRTCV" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DCITRA_ENABLE_COMPATIBILITY_REPORTING=${COMPAT} -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON -DUSE_DISCORD_PRESENCE=ON  -DENABLE_MF=ON -DENABLE_FFMPEG_VIDEO_DUMPER=ON .. 2>&1 && exit 0
-    - name: Citra build
-      working-directory: ${{runner.workspace}}\citra-vanguard\build
-      run: msbuild CitraVanguardRTCV/citra.sln
+      run: |
+        cd ${{runner.workspace}}\citra-vanguard\build
+        cmake -G "CitraVanguardRTCV" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DCITRA_ENABLE_COMPATIBILITY_REPORTING=${COMPAT} -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON -DUSE_DISCORD_PRESENCE=ON  -DENABLE_MF=ON -DENABLE_FFMPEG_VIDEO_DUMPER=ON .. 2>&1 && exit 0
+    - name: Citra Build
+      run: |
+        cd ${{runner.workspace}}\citra-vanguard\build
+        msbuild CitraVanguardRTCV/citra.sln
     
