@@ -277,11 +277,11 @@ jobs:
     - name: Configure
       run: |
         C:\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
-        && cd `"${{runner.workspace}}\RTCV\melonDS-vanguard\build`" && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/msys64/mingw64/qt5-static"
+        && cd /d/a/RTCV/RTCV/melonDS-vanguard/build && cmake .. -G 'MSYS Makefiles' -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON -DQT5_STATIC_DIR=C:/msys64/mingw64/qt5-static"
     - name: Make
       run: |
         C:\msys64\usr\bin\bash.exe -lc "export PATH=`"/mingw64/bin:`$PATH`" \
-        && cd `"${{runner.workspace}}\RTCV\melonDS-vanguard\build`" && make -j$(nproc --all) \
+        && cd /d/a/RTCV/RTCV/melonDS-vanguard/build && make -j$(nproc --all) \
         && ../msys-dist.sh"
 
   Citra:
@@ -318,7 +318,7 @@ jobs:
       shell: cmd
       run: |
         cd ${{runner.workspace}}\RTCV\citra-vanguard\build
-        cmake -G "Visual Studio 15 2017 Win64" -DENABLE_QT=no -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON -DUSE_DISCORD_PRESENCE=ON -DENABLE_MF=ON -DENABLE_FFMPEG_VIDEO_DUMPER=ON .. 2>&1 && exit 0
+        cmake -G "Visual Studio 15 2017 Win64" -DCITRA_USE_BUNDLED_QT=1 -DCITRA_USE_BUNDLED_SDL2=1 -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON -DUSE_DISCORD_PRESENCE=ON -DENABLE_MF=ON -DENABLE_FFMPEG_VIDEO_DUMPER=ON .. 2>&1 && exit 0
     - name: Citra Build
       run: |
         cd ${{runner.workspace}}\RTCV\citra-vanguard\build
