@@ -263,6 +263,19 @@ namespace RTCV.Plugins.HexEditor
             return bytes;
         }
 
+        private bool LookForDifference(long startIndex, int numByte, byte[] searchBytes)
+        {
+            for (var j = 0; j < numByte; j++)
+            {
+                if (_domain.PeekByte(startIndex + j) != searchBytes[j])
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void ResolveFind(string search, string value, long found, bool wrap)
         {
             if (found > -1)
@@ -301,16 +314,7 @@ namespace RTCV.Plugins.HexEditor
             var searchBytes = ConvertHexStringToByteArray(search);
             for (var i = startByte; i < (_domain.Size - numByte); i++)
             {
-                var differenceFound = false;
-                for (var j = 0; j < numByte; j++)
-                {
-                    if (_domain.PeekByte(i + j) != searchBytes[j])
-                    {
-                        differenceFound = true;
-                        break;
-                    }
-                }
-
+                var differenceFound = LookForDifference(i, numByte, searchBytes);
                 if (!differenceFound)
                 {
                     found = i;
@@ -346,16 +350,7 @@ namespace RTCV.Plugins.HexEditor
             var searchBytes = ConvertHexStringToByteArray(search);
             for (var i = startByte; i >= 0; i--)
             {
-                var differenceFound = false;
-                for (var j = 0; j < numByte; j++)
-                {
-                    if (_domain.PeekByte(i + j) != searchBytes[j])
-                    {
-                        differenceFound = true;
-                        break;
-                    }
-                }
-
+                var differenceFound = LookForDifference(i, numByte, searchBytes);
                 if (!differenceFound)
                 {
                     found = i;
@@ -1077,22 +1072,23 @@ namespace RTCV.Plugins.HexEditor
             return sb.ToString();
         }
 
-        private void ExportMenuItem_Click(object sender, EventArgs e)
+        private void SetExportStringToClipboard(bool export)
         {
-            var value = MakeCopyExportString(true);
+            var value = MakeCopyExportString(export);
             if (!string.IsNullOrEmpty(value))
             {
                 Clipboard.SetDataObject(value);
             }
         }
 
+        private void ExportMenuItem_Click(object sender, EventArgs e)
+        {
+            SetExportStringToClipboard(true);
+        }
+
         private void CopyMenuItem_Click(object sender, EventArgs e)
         {
-            var value = MakeCopyExportString(false);
-            if (!string.IsNullOrEmpty(value))
-            {
-                Clipboard.SetDataObject(value);
-            }
+            SetExportStringToClipboard(false);
         }
 
         private void PasteMenuItem_Click(object sender, EventArgs e)
