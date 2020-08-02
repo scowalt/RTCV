@@ -263,6 +263,22 @@ namespace RTCV.Plugins.HexEditor
             return bytes;
         }
 
+        private void ResolveFind(string search, string value, long found, bool wrap)
+        {
+            if (found > -1)
+            {
+                HighlightSecondaries(search, found);
+                GoToAddress(found);
+                _findStr = search;
+            }
+            else if (!wrap)
+            {
+                FindPrev(value, true); // Search the opposite direction if not found
+            }
+
+            _hexFind.Close();
+        }
+
         public void FindNext(string value, bool wrap)
         {
             long found = -1;
@@ -302,18 +318,7 @@ namespace RTCV.Plugins.HexEditor
                 }
             }
 
-            if (found > -1)
-            {
-                HighlightSecondaries(search, found);
-                GoToAddress(found);
-                _findStr = search;
-            }
-            else if (wrap == false)
-            {
-                FindPrev(value, true); // Search the opposite direction if not found
-            }
-
-            _hexFind.Close();
+            ResolveFind(search, value, found, wrap);
         }
 
         public void FindPrev(string value, bool wrap)
@@ -358,18 +363,7 @@ namespace RTCV.Plugins.HexEditor
                 }
             }
 
-            if (found > -1)
-            {
-                HighlightSecondaries(search, found);
-                GoToAddress(found);
-                _findStr = search;
-            }
-            else if (wrap == false)
-            {
-                FindPrev(value, true); // Search the opposite direction if not found
-            }
-
-            _hexFind.Close();
+            ResolveFind(search, value, found, wrap);
         }
 
         #endregion
