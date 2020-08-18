@@ -66,7 +66,6 @@ namespace RTCV.CorruptCore
             set => AllSpec.VanguardSpec.Update(VSPEC.EMUDIR, value);
         }
 
-        public static string EmuAssetsDir => Path.Combine(EmuDir, "ASSETS");
         public static string PluginDir => Path.Combine(RtcDir, "PLUGINS");
 
         public static string RtcDir
@@ -140,12 +139,6 @@ namespace RTCV.CorruptCore
         {
             get => (bool)(AllSpec.CorruptCoreSpec[RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT] ?? false);
             set => AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_DONTCLEANSAVESTATESONQUIT, value);
-        }
-
-        public static bool ShowConsole
-        {
-            get => (bool)AllSpec.CorruptCoreSpec[RTCSPEC.CORE_SHOWCONSOLE];
-            set => AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_SHOWCONSOLE, value);
         }
 
         public static bool RerollAddress
