@@ -201,12 +201,6 @@ namespace RTCV.CorruptCore
             }
         }
 
-        public static bool ExtractBlastlayer
-        {
-            get => (bool)AllSpec.CorruptCoreSpec[RTCSPEC.CORE_EXTRACTBLASTLAYER];
-            set => AllSpec.CorruptCoreSpec.Update(RTCSPEC.CORE_EXTRACTBLASTLAYER, value);
-        }
-
         public static bool EmulatorOsdDisabled
         {
             get => (bool)AllSpec.CorruptCoreSpec[RTCSPEC.CORE_EMULATOROSDDISABLED];
