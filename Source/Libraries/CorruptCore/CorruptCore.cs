@@ -281,6 +281,7 @@ namespace RTCV.CorruptCore
             }
         }
 
+        //Used by RTC clients to begin the RtcCore
         public static void StartEmuSide()
         {
             if (!Attached)
@@ -346,13 +347,6 @@ namespace RTCV.CorruptCore
                         LocalNetCoreRouter.Route(NetcoreCommands.UI, NetcoreCommands.REMOTE_PUSHCORRUPTCORESPECUPDATE, partial, true);
                     }
                 };
-
-                /*
-                if (RTC_StockpileManager.BackupedState != null)
-                    RTC_StockpileManager.BackupedState.Run();
-                else
-                    CorruptCoreSpec.Update(RTCSPEC.CORE_AUTOCORRUPT.ToString(), false);
-                    */
             }
             catch (Exception ex)
             {
