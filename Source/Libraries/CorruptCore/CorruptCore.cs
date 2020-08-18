@@ -1004,13 +1004,6 @@ namespace RTCV.CorruptCore
             }
         }
 
-        /*
-        public static void ApplyBlastLayer(BlastLayer bl)
-        {
-            if(bl.Layer != null)
-                bl.Apply();
-        }*/
-
         public static void OnProgressBarUpdate(object sender, ProgressBarEventArgs e)
         {
             ProgressBarHandler?.Invoke(sender, e);
