@@ -8,7 +8,7 @@ namespace RTCV.Common
 
     public static class ConsoleHelper
     {
-        public static ConsoleCopy con;
+        private static ConsoleCopy con;
 
         public static void CreateConsole(string path = null)
         {
@@ -94,7 +94,7 @@ namespace RTCV.Common
         public static extern int EnableMenuItem(IntPtr tMenu, int targetItem, int targetStatus);
     }
 
-    public class ConsoleCopy : IDisposable
+    internal class ConsoleCopy : IDisposable
     {
         private FileStream fileStream;
         public StreamWriter FileWriter;
