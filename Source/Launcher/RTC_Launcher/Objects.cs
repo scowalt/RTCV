@@ -12,12 +12,12 @@ namespace RTCV.Launcher
 
     public class LauncherConf
     {
-        public string launcherAssetLocation;
-        public string launcherConfLocation;
-        public string batchFilesLocation;
-        public string version;
+        public string launcherAssetLocation { get; private set; }
+        private string launcherConfLocation;
+        public string batchFilesLocation { get; private set; }
+        public string version { get; private set; }
 
-        public LauncherConfItem[] items = { };
+        public LauncherConfItem[] items { get; private set; } = { };
 
         public LauncherConf(string _version)
         {
@@ -37,20 +37,18 @@ namespace RTCV.Launcher
 
     public class LauncherConfItem
     {
-        public string[] lineItems;
-        public string imageLocation;
-        public string batchName;
-        public string batchLocation;
-        public string folderName;
-        public string folderLocation;
-        public string downloadVersion;
-        public string line;
-
+        public string imageLocation { get; private set; }
+        public string batchName { get; private set; }
+        public string batchLocation { get; private set; }
+        public string folderName { get; private set; }
+        public string folderLocation { get; private set; }
+        public string downloadVersion { get; private set; }
+        public string line { get; private set; }
 
         public LauncherConfItem(LauncherConf lc, string _line)
         {
             line = _line;
-            lineItems = _line.Split('|');
+            var lineItems = _line.Split('|');
             imageLocation = Path.Combine(lc.launcherAssetLocation, lineItems[0]);
             batchName = lineItems[1];
             batchLocation = Path.Combine(lc.batchFilesLocation, batchName);
@@ -60,18 +58,18 @@ namespace RTCV.Launcher
         }
     }
 
-
     public class ExecutableCommand
     {
-        public string DisplayName;
-        public string FileName;
-        public string Arguments;
-        public bool WaitForExit;
-        public int WaitForExitTimeout = int.MaxValue;
+        private string DisplayName;
+        private string FileName;
+        private string Arguments;
+        private bool WaitForExit;
+        private int WaitForExitTimeout = int.MaxValue;
+
         [JsonConverter(typeof(StringEnumConverter))]
-        public ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal;
-        public List<ExecutableCommand> PreExecuteCommands = new List<ExecutableCommand>();
-        public List<ExecutableCommand> PostExecuteCommands = new List<ExecutableCommand>();
+        private ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal;
+        private List<ExecutableCommand> PreExecuteCommands = new List<ExecutableCommand>();
+        private List<ExecutableCommand> PostExecuteCommands = new List<ExecutableCommand>();
 
         public ExecutableCommand(string displayName, string fileName, string arguments, bool waitForExit)
         {
@@ -136,36 +134,35 @@ namespace RTCV.Launcher
 
     public class LauncherConfJson
     {
-        public string LauncherAssetLocation;
-        public string LauncherConfLocation;
-        public string[] LauncherAddonConfLocations;
-        public string VersionLocation;
-        public string Version;
+        public string LauncherAssetLocation { get; private set; }
+        public string VersionLocation { get; private set; }
+        public string Version { get; private set; }
 
-        public LauncherConfJsonItem[] Items = { };
+        public LauncherConfJsonItem[] Items { get; private set; } = { };
 
         public LauncherConfJson(string _version)
         {
             Version = _version;
             LauncherAssetLocation = Path.Combine(MainForm.launcherDir, "VERSIONS", Version, "Launcher");
-            LauncherConfLocation = Path.Combine(LauncherAssetLocation, "launcher.json");
+            var launcherConfLocation = Path.Combine(LauncherAssetLocation, "launcher.json");
 
+            string[] launcherAddonConfLocations = { };
             if (Directory.Exists(LauncherAssetLocation))
-                LauncherAddonConfLocations = Directory.GetFiles(LauncherAssetLocation).Where(it => it.Contains("addon_") && it.Contains(".json")).ToArray();
+                launcherAddonConfLocations = Directory.GetFiles(LauncherAssetLocation).Where(it => it.Contains("addon_") && it.Contains(".json")).ToArray();
 
             VersionLocation = Path.Combine(MainForm.launcherDir, "VERSIONS", Version);
 
-            if (!File.Exists(LauncherConfLocation))
+            if (!File.Exists(launcherConfLocation))
                 return;
 
             Directory.SetCurrentDirectory(VersionLocation); //Move ourselves to this working directory
 
 
-            var launcherJson = File.ReadAllText(LauncherConfLocation);
+            var launcherJson = File.ReadAllText(launcherConfLocation);
             List<LauncherConfJsonItem> lcjiList = new List<LauncherConfJsonItem>();
             lcjiList.AddRange(JsonConvert.DeserializeObject<LauncherConfJsonItem[]>(launcherJson));
 
-            foreach (var addonJsonConfLocation in LauncherAddonConfLocations)
+            foreach (var addonJsonConfLocation in launcherAddonConfLocations)
             {
                 try
                 {
