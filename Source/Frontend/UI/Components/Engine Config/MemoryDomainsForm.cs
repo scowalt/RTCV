@@ -12,13 +12,13 @@ namespace RTCV.UI
     using RTCV.UI.Modular;
 
     #pragma warning disable CA2213 //Component designer classes generate their own Dispose method
-    public partial class RTC_MemoryDomains_Form : ComponentForm, IAutoColorize, IBlockable
+    public partial class MemoryDomainsForm : ComponentForm, IAutoColorize, IBlockable
     {
         public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
         public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
         private System.Timers.Timer updateTimer;
 
-        public RTC_MemoryDomains_Form()
+        public MemoryDomainsForm()
         {
             InitializeComponent();
             updateTimer = new System.Timers.Timer
@@ -50,13 +50,13 @@ namespace RTCV.UI
             });
         }
 
-        public void SetMemoryDomainsSelectedDomains(string[] _domains)
+        public void SetMemoryDomainsSelectedDomains(string[] domains)
         {
             var oldState = this.Visible;
 
             for (int i = 0; i < lbMemoryDomains.Items.Count; i++)
             {
-                if (_domains.Contains(lbMemoryDomains.Items[i].ToString()))
+                if (domains.Contains(lbMemoryDomains.Items[i].ToString()))
                 {
                     lbMemoryDomains.SetSelected(i, true);
                 }
@@ -70,13 +70,13 @@ namespace RTCV.UI
             this.Visible = oldState;
         }
 
-        public void SetMemoryDomainsAllButSelectedDomains(string[] _blacklistedDomains)
+        public void SetMemoryDomainsAllButSelectedDomains(string[] blacklistedDomains)
         {
             var oldState = this.Visible;
 
             for (int i = 0; i < lbMemoryDomains.Items.Count; i++)
             {
-                if (_blacklistedDomains?.Contains(lbMemoryDomains.Items[i].ToString()) ?? false)
+                if (blacklistedDomains?.Contains(lbMemoryDomains.Items[i].ToString()) ?? false)
                 {
                     lbMemoryDomains.SetSelected(i, false);
                 }
@@ -90,7 +90,7 @@ namespace RTCV.UI
             this.Visible = oldState;
         }
 
-        private void btnSelectAll_Click(object sender, EventArgs e)
+        private void SelectAllDomains(object sender, EventArgs e)
         {
             RefreshDomains();
 
@@ -102,7 +102,7 @@ namespace RTCV.UI
             UpdateSelectedMemoryDomains(null, null);
         }
 
-        private void btnAutoSelectDomains_Click(object sender, EventArgs e)
+        private void AutoSelectDomains(object sender, EventArgs e)
         {
             LocalNetCoreRouter.Route(NetcoreCommands.VANGUARD, NetcoreCommands.REMOTE_DOMAIN_REFRESHDOMAINS, true);
             RefreshDomains();
@@ -165,23 +165,20 @@ namespace RTCV.UI
             }
         }
 
-        private void lbMemoryDomains_SelectedIndexChanged(object sender, EventArgs e)
+        private void OnSelectedMemoryDomainChanged(object sender, EventArgs e)
         {
             updateTimer.Stop();
             updateTimer.Start();
-
-            //RTC_Restore.SaveRestore();
         }
 
-        private void btnRefreshDomains_Click(object sender, EventArgs e)
+        private void RefreshDomains(object sender, EventArgs e)
         {
             RefreshDomains();
             AllSpec.UISpec.Update("SELECTEDDOMAINS", lbMemoryDomains.SelectedItems.Cast<string>().ToArray());
         }
 
-        private void lbMemoryDomains_MouseDown(object sender, MouseEventArgs e)
+        private void OnMemoryDomainsMouseDown(object sender, MouseEventArgs e)
         {
-            //Point locate = new Point(((Control)sender).Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
             Point locate = new Point(e.Location.X, e.Location.Y);
 
             if (e.Button == MouseButtons.Right)
