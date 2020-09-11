@@ -124,7 +124,7 @@
             }
         }
 
-        public void SetActiveTable(ActiveTableObject act)
+        private void SetActiveTable(ActiveTableObject act)
         {
             FirstInit = true;
             ActiveTableGenerated = act.Data;
@@ -137,7 +137,7 @@
             return File.ReadAllBytes(Path.Combine(RtcCore.workingDir, "MEMORYDUMPS", key + ".dmp"));
         }
 
-        public long[] CapActiveTable(long[] tempActiveTable)
+        private long[] CapActiveTable(long[] tempActiveTable)
         {
             List<long> cappedActiveTable = new List<long>();
 

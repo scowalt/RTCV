@@ -23,12 +23,12 @@ namespace RTCV.UI
             this.DragDrop += RTC_VmdPool_Form_DragDrop;
         }
 
-        public void RTC_VmdPool_Form_DragEnter(object sender, DragEventArgs e)
+        internal void RTC_VmdPool_Form_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Link;
         }
 
-        public void RTC_VmdPool_Form_DragDrop(object sender, DragEventArgs e)
+        internal void RTC_VmdPool_Form_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             foreach (var f in files)
