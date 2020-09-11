@@ -114,6 +114,11 @@ namespace RTCV.Common
 
         public static object GET(Type typ)
         {
+            if (typ == null)
+            {
+                throw new ArgumentNullException(nameof(typ));
+            }
+
             if (!instances.TryGetValue(typ, out object o))
             {
                 lock (lockObject)
