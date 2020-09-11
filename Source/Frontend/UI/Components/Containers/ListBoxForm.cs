@@ -1,4 +1,4 @@
-﻿namespace RTCV.UI
+namespace RTCV.UI
 {
     using System;
     using System.Data;
@@ -20,7 +20,7 @@
 
             this.undockedSizable = false;
 
-            childForms = _childForms;
+            childForms = _childForms ?? throw new ArgumentNullException(nameof(_childForms));
 
             //Populate the filter ComboBox
             lbComponentForms.DisplayMember = "Name";

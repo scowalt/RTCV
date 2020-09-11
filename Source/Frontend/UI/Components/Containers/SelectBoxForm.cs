@@ -17,7 +17,7 @@
 
             Colors.SetRTCColor(Colors.GeneralColor, this);
 
-            childForms = _childForms;
+            childForms = _childForms ?? throw new ArgumentNullException(nameof(_childForms));
 
             cbSelectBox.DisplayMember = "text";
             cbSelectBox.ValueMember = "value";
