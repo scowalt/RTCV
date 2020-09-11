@@ -59,7 +59,7 @@ namespace RTCV.UI
             };
         }
 
-        public void dgvStockpile_CellClick(object sender, DataGridViewCellEventArgs e)
+        internal void dgvStockpile_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e == null || e.RowIndex == -1)
             {
@@ -289,7 +289,7 @@ namespace RTCV.UI
             }
         }
 
-        public static bool RenameStashKey(StashKey sk)
+        internal static bool RenameStashKey(StashKey sk)
         {
             string value = sk.Alias;
 

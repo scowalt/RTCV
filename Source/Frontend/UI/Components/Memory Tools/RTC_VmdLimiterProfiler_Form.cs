@@ -69,26 +69,6 @@ namespace RTCV.UI
             btnGenerateVMD.Enabled = true;
         }
 
-        public static long SafeStringToLong(string input)
-        {
-            try
-            {
-                if (input.IndexOf("0X", StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    return long.Parse(input.Substring(2), NumberStyles.HexNumber);
-                }
-                else
-                {
-                    return long.Parse(input, NumberStyles.HexNumber);
-                }
-            }
-            catch (FormatException e)
-            {
-                Console.Write(e);
-                return -1;
-            }
-        }
-
         public static void ProfileDomain()
         {
         }
