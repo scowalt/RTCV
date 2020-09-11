@@ -219,7 +219,7 @@
                                        $"and 2d games made for 3d-era consoles.";
         }
 
-        public static void SelectComboBoxRandomItem(ComboBox cb)
+        private static void SelectComboBoxRandomItem(ComboBox cb)
         {
             Random RND = new Random((int)DateTime.Now.Ticks);
             int nbItems = cb.Items.Count;
