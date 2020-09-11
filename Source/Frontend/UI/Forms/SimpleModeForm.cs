@@ -11,9 +11,6 @@
 
     public partial class SimpleModeForm : ComponentForm, IAutoColorize, IBlockable
     {
-        public new void HandleMouseDown(object s, MouseEventArgs e) => base.HandleMouseDown(s, e);
-        public new void HandleFormClosing(object s, FormClosingEventArgs e) => base.HandleFormClosing(s, e);
-
         private PlatformType platform = PlatformType.CLASSIC;
 
         private bool DontUpdateSpec = false;

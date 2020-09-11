@@ -36,7 +36,7 @@
             }
         }
 
-        public static ComponentFormTile getTileForm(Form componentForm, int? newSizeX = null, int? newSizeY = null, bool DisplayHeader = true)
+        private static ComponentFormTile getTileForm(Form componentForm, int? newSizeX = null, int? newSizeY = null, bool DisplayHeader = true)
         {
             if (!loadedTileForms.ContainsKey(componentForm))
             {
