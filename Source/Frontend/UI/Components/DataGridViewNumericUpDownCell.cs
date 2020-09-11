@@ -445,35 +445,6 @@ namespace RTCV.UI.Components
         }
 
         /// <summary>
-        /// Custom implementation of the KeyEntersEditMode function. This function is called by the DataGridView control
-        /// to decide whether a keystroke must start an editing session or not. In this case, a new session is started when
-        /// a digit or negative sign key is hit.
-        /// </summary>
-        public override bool KeyEntersEditMode(KeyEventArgs e)
-        {
-            NumberFormatInfo numberFormatInfo = CultureInfo.CurrentCulture.NumberFormat;
-            Keys negativeSignKey = Keys.None;
-            var negativeSignStr = numberFormatInfo.NegativeSign;
-            if (!string.IsNullOrEmpty(negativeSignStr) && negativeSignStr.Length == 1)
-            {
-                negativeSignKey = (Keys)(VkKeyScan(negativeSignStr[0]));
-            }
-            if (Hexadecimal && ((e.KeyCode >= Keys.A && e.KeyCode <= Keys.F)))
-            {
-                return true;
-            }
-            if ((char.IsDigit((char)e.KeyCode) ||
-                 (e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9) ||
-                 negativeSignKey == e.KeyCode ||
-                 Keys.Subtract == e.KeyCode) &&
-                !e.Shift && !e.Alt && !e.Control)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
         /// Called when a cell characteristic that affects its rendering and/or preferred size has changed.
         /// This implementation only takes care of repainting the cells. The DataGridView's autosizing methods
         /// also need to be called in cases where some grid elements autosize.
