@@ -86,6 +86,11 @@
 
         public void Update(PartialSpec _partialSpec, bool propagate = true, bool synced = true)
         {
+            if (_partialSpec == null)
+            {
+                throw new ArgumentNullException(nameof(_partialSpec));
+            }
+
             if (name != _partialSpec.Name)
             {
                 throw new Exception("Name mismatch between PartialSpec and FullSpec");
@@ -233,11 +238,6 @@
             {
                 this[key] = partialSpec.specDico[key];
             }
-        }
-
-        protected PartialSpec(SerializationInfo info, StreamingContext context)
-        {
-            Name = info.GetString("Name");
         }
     }
 
