@@ -502,6 +502,11 @@ namespace RTCV.UI.Components
                 return;
             }
 
+            if (cellStyle == null)
+            {
+                throw new ArgumentNullException(nameof(cellStyle));
+            }
+
             // First paint the borders and background of the cell.
             base.Paint(graphics, clipBounds, cellBounds, rowIndex, cellState, value, formattedValue, errorText, cellStyle, advancedBorderStyle,
                        paintParts & ~(DataGridViewPaintParts.ErrorIcon | DataGridViewPaintParts.ContentForeground));
@@ -614,32 +619,6 @@ namespace RTCV.UI.Components
         private static bool PartPainted(DataGridViewPaintParts paintParts, DataGridViewPaintParts paintPart)
         {
             return (paintParts & paintPart) != 0;
-        }
-
-        /// <summary>
-        /// Custom implementation of the PositionEditingControl method called by the DataGridView control when it
-        /// needs to relocate and/or resize the editing control.
-        /// </summary>
-        public override void PositionEditingControl(bool setLocation,
-                                            bool setSize,
-                                            Rectangle cellBounds,
-                                            Rectangle cellClip,
-                                            DataGridViewCellStyle cellStyle,
-                                            bool singleVerticalBorderAdded,
-                                            bool singleHorizontalBorderAdded,
-                                            bool isFirstDisplayedColumn,
-                                            bool isFirstDisplayedRow)
-        {
-            Rectangle editingControlBounds = PositionEditingPanel(cellBounds,
-                                                        cellClip,
-                                                        cellStyle,
-                                                        singleVerticalBorderAdded,
-                                                        singleHorizontalBorderAdded,
-                                                        isFirstDisplayedColumn,
-                                                        isFirstDisplayedRow);
-            editingControlBounds = GetAdjustedEditingControlBounds(editingControlBounds, cellStyle);
-            this.DataGridView.EditingControl.Location = new Point(editingControlBounds.X, editingControlBounds.Y);
-            this.DataGridView.EditingControl.Size = new Size(editingControlBounds.Width, editingControlBounds.Height);
         }
 
         /// <summary>
