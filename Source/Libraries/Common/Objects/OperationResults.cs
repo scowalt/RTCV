@@ -21,6 +21,11 @@
 
         public OperationResult(string message, NLog.LogLevel severity, NLog.Logger logger, Exception e = null)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
             this.Message = message;
             this.Severity = severity;
             this.Exception = e;
