@@ -38,8 +38,6 @@ namespace RTCV.Common
         [ThreadStatic]
         public static volatile Dictionary<int, List<string>> InvokeStackTraces = new Dictionary<int, List<string>>();
 
-        private static readonly object dicoLock = new object();
-
         public static bool ISNULL<T>()
         {
             Type typ = typeof(T);

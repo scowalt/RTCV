@@ -37,7 +37,7 @@
             propagationIsEnabled = _propagationEnabled;
 
             //Creating a FullSpec requires a template
-            template = partialSpec;
+            template = partialSpec ?? throw new ArgumentNullException(nameof(partialSpec));
             base.version = 1;
             name = partialSpec.Name;
             Update(template);
@@ -51,6 +51,11 @@
 
         public void RegisterUpdateAction(Action<object, SpecUpdateEventArgs> registrant)
         {
+            if (registrant == null)
+            {
+                throw new ArgumentNullException(nameof(registrant));
+            }
+
             UnregisterUpdateAction();
             SpecUpdated += registrant.Invoke; //We trick the eventhandler in executing the registrant instead
         }
