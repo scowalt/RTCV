@@ -7,7 +7,7 @@ namespace RTCV.CorruptCore
     using System.Windows.Forms;
     using RTCV.NetCore;
 
-    public static class StockpileManager_UISide
+    public static class StockpileManagerUISide
     {
         //Object references
         private static Stockpile CurrentStockpile { get; set; }
