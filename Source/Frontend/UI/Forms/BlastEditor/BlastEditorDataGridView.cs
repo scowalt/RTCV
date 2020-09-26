@@ -8,8 +8,6 @@ namespace RTCV.UI.Forms.BlastEditor
 
     internal partial class BlastEditorDataGridView : DataGridView
     {
-        private ContextMenuStrip _cms;
-
         internal BlastEditorDataGridView() : base()
         {
             CellFormatting += OnCellFormatting;

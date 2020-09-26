@@ -32,7 +32,7 @@ namespace RTCV.UI
 		private void InitializeComponent()
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BlastEditorForm));
-            this.dgvBlastEditor = new System.Windows.Forms.DataGridView();
+            this.dgvBlastEditor = new RTCV.UI.Forms.BlastEditor.BlastEditorDataGridView();
             this.panelSidebar = new System.Windows.Forms.Panel();
             this.btnDisable50 = new System.Windows.Forms.Button();
             this.btnInvertDisabled = new System.Windows.Forms.Button();
@@ -174,7 +174,6 @@ namespace RTCV.UI
             this.dgvBlastEditor.Size = new System.Drawing.Size(662, 245);
             this.dgvBlastEditor.TabIndex = 0;
             this.dgvBlastEditor.Tag = "color:normal";
-            this.dgvBlastEditor.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.OnBlastEditorCellFormatting);
             this.dgvBlastEditor.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.OnBlastEditorCellMouseClick);
             this.dgvBlastEditor.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.OnBlastEditorCellMouseDoubleClick);
             this.dgvBlastEditor.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnBlastEditorCellValueChanged);
@@ -1457,7 +1456,7 @@ namespace RTCV.UI
 
 		#endregion
 
-		public System.Windows.Forms.DataGridView dgvBlastEditor;
+		internal RTCV.UI.Forms.BlastEditor.BlastEditorDataGridView dgvBlastEditor;
 		public System.Windows.Forms.Panel panelSidebar;
 		private System.Windows.Forms.Button btnHelp;
 		private System.Windows.Forms.Label label3;

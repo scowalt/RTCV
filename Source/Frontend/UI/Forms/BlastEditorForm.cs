@@ -819,12 +819,6 @@ namespace RTCV.UI
             updateMaximum(col);
         }
 
-        private void OnBlastEditorCellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            //Bug in DGV. If you don't read the value back, it goes into edit mode on first click if you read the selectedrow within SelectionChanged. Why? No idea.
-            _ = dgvBlastEditor.Rows[e.RowIndex].Cells[0].Value;
-        }
-
         private void OnFilterTextChanged(object sender, EventArgs e)
         {
             if (tbFilter.Text.Length == 0)
