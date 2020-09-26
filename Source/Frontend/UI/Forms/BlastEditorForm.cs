@@ -55,6 +55,7 @@ namespace RTCV.UI
     using RTCV.NetCore;
     using RTCV.Common;
     using RTCV.UI.Components;
+    using RTCV.UI.Forms.BlastEditor;
 
     #pragma warning disable CA2213 //Component designer classes generate their own Dispose method
     public partial class BlastEditorForm : Modular.ColorizedForm
@@ -81,29 +82,6 @@ namespace RTCV.UI
         private const int numericUpDownFillWeight = 35;
         private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private enum BuProperty
-        {
-            isEnabled,
-            isLocked,
-            Domain,
-            Address,
-            Precision,
-            ValueString,
-            Source,
-            ExecuteFrame,
-            Lifetime,
-            Loop,
-            LoopTiming,
-            LimiterTime,
-            LimiterListHash,
-            InvertLimiter,
-            StoreTime,
-            StoreLimiterSource,
-            StoreType,
-            SourceDomain,
-            SourceAddress,
-            Note
-        }
         //We gotta cache this stuff outside of the scope of InitializeDGV
         //    private object actionTimeValues =
 
