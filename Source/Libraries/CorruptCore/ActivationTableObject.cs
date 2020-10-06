@@ -9,6 +9,7 @@ namespace RTCV.CorruptCore
     [Serializable]
     public class ActiveTableObject : IEquatable<ActiveTableObject>
     {
+        [JsonIgnore]
         public long[] Data { get; set; }
 
         public ActiveTableObject()
