@@ -5,14 +5,14 @@
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <IsPackable>false</IsPackable>
 
-    <OutputPath>..\..\Build\</OutputPath>
+    <OutputPath>..\Build\</OutputPath>
     <!-- Use Build\ instead of Build\net471\ for output -->
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup Label="RTCV Library References">
-    <ProjectReference Include="..\..\Source\Libraries\CorruptCore\CorruptCore.csproj">
+    <ProjectReference Include="..\Source\Libraries\CorruptCore\CorruptCore.csproj">
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

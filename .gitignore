@@ -10,3 +10,6 @@ build
 Output/*
 StyleCop.Cache
 .vscode
+
+# Coverage output
+**/lcov.info
