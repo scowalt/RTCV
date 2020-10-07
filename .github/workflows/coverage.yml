@@ -1,0 +1,16 @@
+name: Coverage
+on: [push]
+
+jobs:
+  coverage:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.0
+    - name: Restore packages
+      run: msbuild RTCV.sln /t:restore
+    - name: Build with MSBuild
+      run: msbuild RTCV.sln
+    - name: Run tests with coverage
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=lcov.info
