@@ -14,3 +14,7 @@ jobs:
       run: msbuild RTCV.sln
     - name: Run tests with coverage
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=lcov.info
+    - name: Report coverage to coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.COVERALLS_GITHUB_TOKEN }}
