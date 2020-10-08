@@ -13,3 +13,4 @@ StyleCop.Cache
 
 # Coverage output
 **/lcov.info
+coverage.json
