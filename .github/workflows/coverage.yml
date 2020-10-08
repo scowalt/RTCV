@@ -1,4 +1,4 @@
-name: Coverage
+name: Report Code Coverage to CodeCov
 on: [push]
 
 jobs:
