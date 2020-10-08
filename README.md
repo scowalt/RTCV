@@ -16,6 +16,8 @@
 </p>
 
 # RTCV - Real-Time Corruptor Vanguard
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fscowalt%2FRTCV.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fscowalt%2FRTCV?ref=badge_shield)
+
 
  > Real-Time Corruptor, Vanguard, CorruptCore, NetCore2, RTC Launcher
 
@@ -52,3 +54,7 @@ Icon graciously provided by [ShyGuyXXL](https://twitter.com/shyguyxxl)
 1. `cinst -y visualstudio2019buildtools nuget.commandline netfx-4.7.1-devpack`
 1. `nuget restore RTCV.sln`
 1. `msbuild.exe`
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fscowalt%2FRTCV.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fscowalt%2FRTCV?ref=badge_large)
